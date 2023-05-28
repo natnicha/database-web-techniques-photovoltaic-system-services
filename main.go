@@ -1,8 +1,14 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
 
 func main() {
+	godotenv.Load(".env")
 
 	// Creates a gin router with default middleware
 	router := gin.Default()
@@ -14,5 +20,5 @@ func main() {
 			"message": "example",
 		}) // gin.H is a shortcut for map[string]interface{}
 	})
-	router.Run() // listen and serve on port 8080
+	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port 8080
 }
