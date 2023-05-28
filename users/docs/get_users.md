@@ -37,13 +37,14 @@ To get user information such as first name, last name, email, etc.
 |            |         |          |                 |                   |
 
 
-## Sample request(s) 
+## Sample Request(s) 
 
-### Sample Query Parameter Requested 
+### Sample Request where user ID = 1
 ```
 url = /api/v1/user/1
 ```
 
+## Sample Response(s) 
 ### Success Response
 ```json
 {
@@ -56,14 +57,5 @@ url = /api/v1/user/1
     "email" : "nat.rodtong@gmail.com",
     "is_active" : "true"
   }
-}
-```
-
-## Error Response (case: bad request)
-```json
-{
-  "status" : "ERROR",
-  "code" : 400,
-  "message" : "Bad Request"
 }
 ```
