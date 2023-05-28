@@ -1,6 +1,6 @@
 tidy: 
 	go mod tidy
 
-run:
+run: 
 	go run main.go
 
