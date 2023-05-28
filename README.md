@@ -1,1 +1,1 @@
-# database-web-technique-photovoltaic-system
+# database-web-techniques-photovoltaic-system
