@@ -25,9 +25,9 @@ To get user information such as first name, last name, email, etc.
 
 ## Header Parameters
 
-| Key                 | Type       | Required  | Description                                   |
-| ------------------- | :--------: | :-------: | --------------------------------------------- |
-| Content-Type        | string     | true      | Content-Type has to be `application/json`     |
+| Key                 | Type       | Required  | Description                    |
+| ------------------- | :--------: | :-------: | ------------------------------ |
+|                     |            |           |                                |
 
 
 ## Body Parameters
@@ -39,22 +39,22 @@ To get user information such as first name, last name, email, etc.
 
 ## Sample Request(s) 
 
-### Sample Request where user ID = 1
+### A sample request where user ID = 1
 ```
 url = /api/v1/user/1
 ```
 
 ## Sample Response(s) 
-### Success Response
+### A success response
 ```json
 {
   "status" : "SUCCESS",
   "code" : 200,
   "data": {
     "id" : "1",
-    "first_name" : "Natnicha",
-    "last_name" : "Rodtong",
-    "email" : "nat.rodtong@gmail.com",
+    "first_name" : "Gloria",
+    "last_name" : "Bonner",
+    "email" : "gloria.bonner@gmail.com",
     "is_active" : "true"
   }
 }
