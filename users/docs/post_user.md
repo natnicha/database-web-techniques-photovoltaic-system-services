@@ -25,9 +25,9 @@ To create a new user according to body parameters
 
 ## Header Parameters
 
-| Key                 | Type       | Required  | Description                    |
-| ------------------- | :--------: | :-------: | ------------------------------ |
-|                     |            |           |                                |
+| Key                 | Type       | Required  | Description                                   |
+| ------------------- | :--------: | :-------: | --------------------------------------------- |
+| Content-Type        | string     | true      | Content-Type has to be `application/json`     |
 
 
 ## Body Parameters
@@ -37,6 +37,7 @@ To create a new user according to body parameters
 | first_name | string  | true     |                 | a user's first name                                                                   |
 | last_name  | string  | true     |                 | a user's last name                                                                    |
 | email      | string  | true     |                 | a user's email using for login to application                                         |
+| password   | string  | true     |                 | a user's password using for login to application                                      |
 | is_active  | boolean | false    | true            | In order to activate this new user, set to be `true` to activate. Otherwise, `false`  |
 
 ## Sample Request(s) 
@@ -45,30 +46,31 @@ url = /api/v1/user/create
 ```
 ```json
 {
-  "first_name" : "Natnicha",
-  "last_name" : "Rodtong",
-  "email" : "nat.rodtong@gmail.com",
+  "first_name" : "Gloria",
+  "last_name" : "Bonner",
+  "email" : "gloria.bonner@gmail.com",
+  "password" : "1234",
   "is_active" : "true"
 }
 ```
 
 ## Sample Response(s)
-### Success Response
+### A success Response
 ```json
 {
   "status" : "SUCCESS",
   "code" : 201,
   "data": {
     "id" : "1",
-    "first_name" : "Natnicha",
-    "last_name" : "Rodtong",
-    "email" : "nat.rodtong@gmail.com",
+    "first_name" : "Gloria",
+    "last_name" : "Bonner",
+    "email" : "gloria.bonner@gmail.com",
     "is_active" : "true"
   }
 }
 ```
 
-### Error Response (case: missing first name)
+### An error response (case: missing first name)
 ```json
 {
   "status" : "ERROR",
