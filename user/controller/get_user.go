@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"photovoltaic-system-services/users/repositories"
+	"photovoltaic-system-services/user/repositories"
 
 	"github.com/gin-gonic/gin"
 )

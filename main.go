@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 
 	database "photovoltaic-system-services/db"
-	users "photovoltaic-system-services/users/handler"
+	users "photovoltaic-system-services/user/handler"
 )
 
 func main() {

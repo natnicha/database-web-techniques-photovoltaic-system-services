@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 
-	"photovoltaic-system-services/users/controller"
+	"photovoltaic-system-services/user/controller"
 )
 
 type Help interface {
