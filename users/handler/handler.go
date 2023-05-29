@@ -1,13 +1,16 @@
 package handler
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+
+	"photovoltaic-system-services/users/controller"
 )
 
-func Help(context *gin.Context) {
-	fmt.Println("This is a helper function")
-	context.JSON(http.StatusCreated, gin.H{"user": "root"})
+type Help interface {
+	Get(context *gin.Context)
+	CreateUser(context *gin.Context)
+}
+
+func Get(context *gin.Context) {
+	controller.Get(context)
 }
