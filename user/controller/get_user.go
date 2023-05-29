@@ -16,7 +16,7 @@ func Get(context *gin.Context) {
 		return
 	}
 
-	if len(user) == 0 {
+	if user.Id == 0 {
 		context.JSON(http.StatusOK, gin.H{"user": "user " + id + " does not exists"})
 		return
 	}

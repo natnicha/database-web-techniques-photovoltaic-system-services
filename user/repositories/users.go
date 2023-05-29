@@ -18,10 +18,9 @@ type Users struct {
 	IsActive  bool   `json:"is_active"`
 }
 
-func GetUserById(id string) (user []Users, err error) {
+func GetUserById(id string) (user *Users, err error) {
 	result := db.Database.Where("id = ?", id).Find(&user)
-	_, err = result.Rows()
-	if err != nil {
+	if result.Error != nil {
 		return nil, err
 	}
 	return user, nil
