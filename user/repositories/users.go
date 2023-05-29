@@ -5,23 +5,32 @@ import (
 )
 
 type User interface {
-	GetUserById(id int) (user *users, err error)
+	GetUserById(id int) (user *Users, err error)
+	CreateUser(id string) (err error)
 }
 
-type users struct {
+type Users struct {
 	Id        int    `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
-	Password  string `json:"password"`
+	Password  []byte `json:"password"`
 	IsActive  bool   `json:"is_active"`
 }
 
-func GetUserById(id string) (user []users, err error) {
+func GetUserById(id string) (user []Users, err error) {
 	result := db.Database.Where("id = ?", id).Find(&user)
 	_, err = result.Rows()
 	if err != nil {
 		return nil, err
 	}
 	return user, nil
+}
+
+func CreateUser(user Users) (*Users, error) {
+	result := db.Database.Create(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
 }

@@ -8,9 +8,13 @@ import (
 
 type Help interface {
 	Get(context *gin.Context)
-	CreateUser(context *gin.Context)
+	Create(context *gin.Context)
 }
 
 func Get(context *gin.Context) {
 	controller.Get(context)
+}
+
+func Create(context *gin.Context) {
+	controller.Create(context)
 }
