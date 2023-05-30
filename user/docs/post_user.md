@@ -56,25 +56,30 @@ url = /api/v1/user/create
 
 ## Sample Response(s)
 ### A success Response
+HTTP status 201 Created
 ```json
 {
-  "status" : "SUCCESS",
-  "code" : 201,
   "data": {
     "id" : "1",
     "first_name" : "Gloria",
     "last_name" : "Bonner",
     "email" : "gloria.bonner@gmail.com",
+    "password" : "$2a$10$RqZ3UIVfsSM/jP/dO3.5.u2OxuJBU29YvPlYQdPg1cnTax4D8Ny7C",
     "is_active" : "true"
   }
 }
 ```
 
 ### An error response (case: missing first name)
+HTTP status 400 Bad Request
+```json
+null
+```
+
+### An error response (case: unsupported driver)
+HTTP status 500 Internal Server Error
 ```json
 {
-  "status" : "ERROR",
-  "code" : 400,
-  "message" : "Bad Request"
+  "error": "unsupported driver"
 }
 ```

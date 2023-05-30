@@ -37,25 +37,28 @@ To delete an existing user by user ID
 |            |         |          |                 |                   |
 
 
-## Sample Request(s) 
+## Sample Request(s)
 ```
 url = /api/v1/user/delete/1
 ```
 
 ## Sample Response(s)
 ### A success Response
+HTTP status 200 OK
 ```json
-{
-  "status" : "SUCCESS",
-  "code" : 200
-}
+null
 ```
 
 ### An error response (case: user ID doesn't exist)
+HTTP status 400 Bad Request
+```json
+null
+```
+
+### An error response (case: unsupported driver)
+HTTP status 500 Internal Server Error
 ```json
 {
-  "status" : "ERROR",
-  "code" : 400,
-  "message" : "Bad Request"
+  "error": "unsupported driver"
 }
 ```

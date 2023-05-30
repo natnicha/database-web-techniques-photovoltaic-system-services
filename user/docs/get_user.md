@@ -46,10 +46,9 @@ url = /api/v1/user/1
 
 ## Sample Response(s) 
 ### A success response
+HTTP status 200 OK
 ```json
 {
-  "status" : "SUCCESS",
-  "code" : 200,
   "data": {
     "id" : "1",
     "first_name" : "Gloria",
@@ -57,5 +56,21 @@ url = /api/v1/user/1
     "email" : "gloria.bonner@gmail.com",
     "is_active" : "true"
   }
+}
+```
+
+### A success response (case: user doesn't exist)
+HTTP status 200 OK
+```json
+{
+  "data": "user 1 does not exist"
+}
+```
+
+### An error response (case: unsupported driver)
+HTTP status 500 Internal Server Error
+```json
+{
+  "error": "unsupported driver"
 }
 ```
