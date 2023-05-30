@@ -39,12 +39,16 @@ func CreateUser(user Users) (*Users, error) {
 	return &user, nil
 }
 
-func UpdateUser(id string, user Users) error {
-	tx := db.Database.Where("id = ?", id).Updates(user)
-	if tx.Error != nil {
-		return tx.Error
+func UpdateUser(id int, user Users) (*Users, error) {
+	oldUser, err := GetUserById(id)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+	tx := db.Database.Model(&oldUser).Where("id = ?", id).Updates(user)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return oldUser, nil
 }
 
 func DeleteUserById(id string) (err error) {

@@ -13,7 +13,7 @@ To update an existing user according to body parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-|           |           |              |                                 |
+| id        | integer   | true         | user ID                         |
 
 
 ## Query Parameters
