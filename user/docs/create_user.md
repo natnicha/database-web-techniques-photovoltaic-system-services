@@ -99,4 +99,3 @@ HTTP status 409 Conflict
   "error": "The email is already assigned in the system"
 }
 ```
-
