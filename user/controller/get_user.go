@@ -12,14 +12,13 @@ func Get(context *gin.Context) {
 	id := context.Param("id")
 	user, err := repositories.GetUserById(id)
 	if err != nil {
-		context.JSON(http.StatusCreated, gin.H{"err": err})
+		context.JSON(http.StatusCreated, gin.H{"error": err})
 		return
 	}
 
 	if user.Id == 0 {
-		context.JSON(http.StatusOK, gin.H{"user": "user " + id + " does not exists"})
+		context.JSON(http.StatusOK, gin.H{"data": "user " + id + " does not exist"})
 		return
 	}
-	context.JSON(http.StatusOK, gin.H{"user": user})
-
+	context.JSON(http.StatusOK, gin.H{"data": user})
 }

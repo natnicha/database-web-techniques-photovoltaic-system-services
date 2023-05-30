@@ -21,23 +21,23 @@ func Create(context *gin.Context) {
 	var reqBody requestBody
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"err": err})
+		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
 
 	user, err := prepareUserInfo(reqBody)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"err": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
 	userResult, err := repositories.CreateUser(user)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"err": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"user": userResult})
+	context.JSON(http.StatusOK, gin.H{"data": userResult})
 }
 
 func prepareUserInfo(reqBody requestBody) (user repositories.Users, err error) {
