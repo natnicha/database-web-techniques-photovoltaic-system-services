@@ -15,8 +15,16 @@ type Users struct {
 	UpdateAt  time.Time `json:"update_at"`
 }
 
-func GetUserById(id string) (user *Users, err error) {
+func GetUserById(id int) (user *Users, err error) {
 	result := db.Database.Where("id = ?", id).Find(&user)
+	if result.Error != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func GetUserByEmail(email string) (user *Users, err error) {
+	result := db.Database.Where("email = ?", email).First(&user)
 	if result.Error != nil {
 		return nil, err
 	}

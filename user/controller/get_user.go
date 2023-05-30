@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"photovoltaic-system-services/user/repositories"
 
@@ -9,7 +10,12 @@ import (
 )
 
 func Get(context *gin.Context) {
-	id := context.Param("id")
+	id, err := strconv.Atoi(context.Param("id"))
+	if err != nil {
+		context.JSON(http.StatusCreated, gin.H{"error": err})
+		return
+	}
+
 	user, err := repositories.GetUserById(id)
 	if err != nil {
 		context.JSON(http.StatusCreated, gin.H{"error": err})
@@ -17,7 +23,7 @@ func Get(context *gin.Context) {
 	}
 
 	if user.Id == 0 {
-		context.JSON(http.StatusOK, gin.H{"data": "user " + id + " does not exist"})
+		context.JSON(http.StatusOK, gin.H{"data": "user " + string(id) + " does not exist"})
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{"data": user})

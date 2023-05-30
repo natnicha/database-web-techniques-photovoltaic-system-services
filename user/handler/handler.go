@@ -7,24 +7,29 @@ import (
 )
 
 type Help interface {
-	Get(context *gin.Context)
-	Create(context *gin.Context)
-	Update(context *gin.Context)
 	Delete(context *gin.Context)
+	Get(context *gin.Context)
+	Login(context *gin.Context)
+	Register(context *gin.Context)
+	Update(context *gin.Context)
+}
+
+func Delete(context *gin.Context) {
+	controller.Delete(context)
 }
 
 func Get(context *gin.Context) {
 	controller.Get(context)
 }
 
-func Create(context *gin.Context) {
+func Login(context *gin.Context) {
+	controller.Login(context)
+}
+
+func Register(context *gin.Context) {
 	controller.Create(context)
 }
 
 func Update(context *gin.Context) {
 	controller.Update(context)
-}
-
-func Delete(context *gin.Context) {
-	controller.Delete(context)
 }
