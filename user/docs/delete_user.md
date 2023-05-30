@@ -13,7 +13,7 @@ To delete an existing user by user ID
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-|           |           |              |                                 |
+| id        | integer   | true         | user ID                         |
 
 
 ## Query Parameters
