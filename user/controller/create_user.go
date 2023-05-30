@@ -2,21 +2,21 @@ package controller
 
 import (
 	"net/http"
-	"net/mail"
 	"time"
 
 	"photovoltaic-system-services/user/repositories"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type requestBody struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	IsActive  bool   `json:"is_active"`
+	FirstName string `json:"first_name" validate:"required"`
+	LastName  string `json:"last_name" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
+	Password  string `json:"password" validate:"required"`
+	IsActive  bool   `json:"is_active" default:"true"`
 }
 
 func Create(context *gin.Context) {
@@ -27,10 +27,12 @@ func Create(context *gin.Context) {
 		return
 	}
 
-	isEmailFormat := validateEmailFormat(reqBody.Email)
-	if !isEmailFormat {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "The email is invalid format"})
-		return
+	err = validateStruct(reqBody)
+	if err != nil {
+		for _, e := range err.(validator.ValidationErrors) {
+			context.JSON(http.StatusBadRequest, gin.H{"error": e.Error()})
+			return
+		}
 	}
 
 	existingUser, err := repositories.GetUserByEmail(reqBody.Email)
@@ -59,9 +61,9 @@ func Create(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{"data": userResult})
 }
 
-func validateEmailFormat(email string) bool {
-	_, err := mail.ParseAddress(email)
-	return err == nil
+func validateStruct(obj interface{}) error {
+	v := validator.New()
+	return v.Struct(obj)
 }
 
 func prepareUserInfo(reqBody requestBody) (user repositories.Users, err error) {

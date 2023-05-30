@@ -76,11 +76,19 @@ HTTP status 400 Bad Request
 null
 ```
 
+### An error response (case: missing required first name)
+HTTP status 400 Bad Request
+```json
+{
+  "error": "Key: 'requestBody.FirstName' Error:Field validation for 'FirstName' failed on the 'required' tag"
+}
+```
+
 ### An error response (case: invalid email format)
 HTTP status 400 Bad Request
 ```json
 {
-  "error": "The email is invalid format"
+  "error": "Key: 'requestBody.Email' Error:Field validation for 'Email' failed on the 'email' tag"
 }
 ```
 
