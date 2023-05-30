@@ -2,15 +2,17 @@ package repositories
 
 import (
 	"photovoltaic-system-services/db"
+	"time"
 )
 
 type Users struct {
-	Id        int    `json:"id"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Email     string `json:"email"`
-	Password  []byte `json:"password"`
-	IsActive  bool   `json:"is_active"`
+	Id        int       `json:"id"`
+	FirstName string    `json:"first_name"`
+	LastName  string    `json:"last_name"`
+	Email     string    `json:"email"`
+	Password  []byte    `json:"password"`
+	IsActive  bool      `json:"is_active"`
+	UpdateAt  time.Time `json:"update_at"`
 }
 
 func GetUserById(id string) (user *Users, err error) {
@@ -33,6 +35,14 @@ func UpdateUser(id string, user Users) error {
 	tx := db.Database.Where("id = ?", id).Updates(user)
 	if tx.Error != nil {
 		return tx.Error
+	}
+	return nil
+}
+
+func DeleteUserById(id string) (err error) {
+	result := db.Database.Where("id = ?", id).Delete(Users{})
+	if result.Error != nil {
+		return err
 	}
 	return nil
 }

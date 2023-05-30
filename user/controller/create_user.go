@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
 	"photovoltaic-system-services/user/repositories"
 
@@ -51,6 +52,7 @@ func prepareUserInfo(reqBody requestBody) (user repositories.Users, err error) {
 		LastName:  reqBody.LastName,
 		Email:     reqBody.Email,
 		Password:  hashPassword,
+		UpdateAt:  time.Now(),
 	}
 	return user, nil
 }
