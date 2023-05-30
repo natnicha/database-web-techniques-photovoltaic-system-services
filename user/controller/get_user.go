@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -23,7 +24,7 @@ func Get(context *gin.Context) {
 	}
 
 	if user.Id == 0 {
-		context.JSON(http.StatusOK, gin.H{"data": "user " + string(id) + " does not exist"})
+		context.JSON(http.StatusOK, gin.H{"data": "user " + fmt.Sprint(id) + " does not exist"})
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{"data": user})
