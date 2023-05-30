@@ -9,6 +9,7 @@ import (
 type Help interface {
 	Get(context *gin.Context)
 	Create(context *gin.Context)
+	Update(context *gin.Context)
 }
 
 func Get(context *gin.Context) {
@@ -17,4 +18,8 @@ func Get(context *gin.Context) {
 
 func Create(context *gin.Context) {
 	controller.Create(context)
+}
+
+func Update(context *gin.Context) {
+	controller.Update(context)
 }

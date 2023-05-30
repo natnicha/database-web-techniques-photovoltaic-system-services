@@ -4,11 +4,6 @@ import (
 	"photovoltaic-system-services/db"
 )
 
-type User interface {
-	GetUserById(id int) (user *Users, err error)
-	CreateUser(id string) (err error)
-}
-
 type Users struct {
 	Id        int    `json:"id"`
 	FirstName string `json:"first_name"`
@@ -32,4 +27,12 @@ func CreateUser(user Users) (*Users, error) {
 		return nil, result.Error
 	}
 	return &user, nil
+}
+
+func UpdateUser(id string, user Users) error {
+	tx := db.Database.Where("id = ?", id).Updates(user)
+	if tx.Error != nil {
+		return tx.Error
+	}
+	return nil
 }
