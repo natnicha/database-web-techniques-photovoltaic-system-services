@@ -24,7 +24,7 @@ func Get(context *gin.Context) {
 	}
 
 	if user.Id == 0 {
-		context.JSON(http.StatusOK, gin.H{"data": "user " + fmt.Sprint(id) + " does not exist"})
+		context.JSON(http.StatusNotFound, gin.H{"error": "user " + fmt.Sprint(id) + " does not exist"})
 		return
 	}
 	context.JSON(http.StatusOK, gin.H{"data": user})

@@ -6,7 +6,7 @@ To create a new user according to body parameters
 
 | ** Method **    | POST                    | 
 | --------------- | ----------------------- | 
-| ** Structure ** | `/api/v1/user/create`   |
+| ** Structure ** | `/auth/register`        |
 
 
 ## Path Parameters
@@ -42,7 +42,7 @@ To create a new user according to body parameters
 
 ## Sample Request(s) 
 ```
-url = /api/v1/user/create
+url = /auth/register
 ```
 ```json
 {
@@ -76,6 +76,14 @@ HTTP status 400 Bad Request
 null
 ```
 
+### An error response (case: invalid email format)
+HTTP status 400 Bad Request
+```json
+{
+  "error": "The email is invalid format"
+}
+```
+
 ### An error response (case: unsupported driver)
 HTTP status 500 Internal Server Error
 ```json
@@ -83,3 +91,12 @@ HTTP status 500 Internal Server Error
   "error": "unsupported driver"
 }
 ```
+
+### An error response (case: conflict email in the system)
+HTTP status 409 Conflict
+```json
+{
+  "error": "The email is already assigned in the system"
+}
+```
+

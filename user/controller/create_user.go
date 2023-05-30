@@ -29,7 +29,7 @@ func Create(context *gin.Context) {
 
 	isEmailFormat := validateEmailFormat(reqBody.Email)
 	if !isEmailFormat {
-		context.JSON(http.StatusOK, gin.H{"error": "The email is invalid format"})
+		context.JSON(http.StatusBadRequest, gin.H{"error": "The email is invalid format"})
 		return
 	}
 
@@ -40,7 +40,7 @@ func Create(context *gin.Context) {
 	}
 
 	if existingUser != nil {
-		context.JSON(http.StatusOK, gin.H{"error": "The email is already assigned in the system"})
+		context.JSON(http.StatusConflict, gin.H{"error": "The email is already assigned in the system"})
 		return
 	}
 

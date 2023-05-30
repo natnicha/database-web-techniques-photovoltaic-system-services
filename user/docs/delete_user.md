@@ -27,7 +27,7 @@ To delete an existing user by user ID
 
 | Key                 | Type       | Required  | Description                    |
 | ------------------- | :--------: | :-------: | ------------------------------ |
-|                     |            |           |                                |
+| Authorization       | string     | true      | A bearer token is required     |
 
 
 ## Body Parameters

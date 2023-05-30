@@ -27,7 +27,7 @@ To get user information such as first name, last name, email, etc.
 
 | Key                 | Type       | Required  | Description                    |
 | ------------------- | :--------: | :-------: | ------------------------------ |
-|                     |            |           |                                |
+| Authorization       | string     | true      | A bearer token is required     |
 
 
 ## Body Parameters
@@ -59,11 +59,11 @@ HTTP status 200 OK
 }
 ```
 
-### A success response (case: user doesn't exist)
-HTTP status 200 OK
+### A success response (case: data doesn't exist)
+HTTP status 404 Not Found
 ```json
 {
-  "data": "user 1 does not exist"
+  "error": "user 1 does not exist"
 }
 ```
 

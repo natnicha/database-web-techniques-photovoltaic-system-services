@@ -28,6 +28,7 @@ To update an existing user according to body parameters
 | Key                 | Type       | Required  | Description                                   |
 | ------------------- | :--------: | :-------: | --------------------------------------------- |
 | Content-Type        | string     | true      | Content-Type has to be `application/json`     |
+| Authorization       | string     | true      | A bearer token is required                    |
 
 
 ## Body Parameters
@@ -79,16 +80,7 @@ null
 ### A success response updating user information
 HTTP status 200 OK
 ```json
-{
-  "data": {
-    "id" : "1",
-    "first_name" : "Gloria",
-    "last_name" : "Bonner",
-    "email" : "gloria.bonner@gmail.com",
-    "password" : "$2a$10$RqZ3UIVfsSM/jP/dO3.5.u2OxuJBU29YvPlYQdPg1cnTax4D8Ny7C",
-    "is_active" : "true"
-  }
-}
+null
 ```
 
 ### An error response (case: no parameter in a request body)

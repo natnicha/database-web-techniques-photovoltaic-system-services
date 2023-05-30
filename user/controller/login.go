@@ -33,7 +33,7 @@ func Login(context *gin.Context) {
 
 	isPasswordCorrect := validatePassword(user.Password, reqBody.Password)
 	if !isPasswordCorrect {
-		context.JSON(http.StatusOK, gin.H{"error": "incorrect email or password"})
+		context.JSON(http.StatusUnauthorized, gin.H{"error": "incorrect email or password"})
 		return
 	}
 
