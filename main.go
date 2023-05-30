@@ -25,7 +25,7 @@ func serveApplication() {
 	user := apiV1.Group("/user")
 	user.GET("/:id", users.Get)
 	user.POST("/create", users.Create)
-	user.POST("/update/:id", users.Update)
+	user.PUT("/update/:id", users.Update)
 
 	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))
