@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"net/mail"
 	"time"
 
 	"photovoltaic-system-services/user/repositories"
@@ -26,6 +27,23 @@ func Create(context *gin.Context) {
 		return
 	}
 
+	isEmailFormat := validateEmailFormat(reqBody.Email)
+	if !isEmailFormat {
+		context.JSON(http.StatusOK, gin.H{"error": "The email is invalid format"})
+		return
+	}
+
+	existingUser, err := repositories.GetUserByEmail(reqBody.Email)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+
+	if existingUser != nil {
+		context.JSON(http.StatusOK, gin.H{"error": "The email is already assigned in the system"})
+		return
+	}
+
 	user, err := prepareUserInfo(reqBody)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -39,6 +57,11 @@ func Create(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{"data": userResult})
+}
+
+func validateEmailFormat(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
 }
 
 func prepareUserInfo(reqBody requestBody) (user repositories.Users, err error) {

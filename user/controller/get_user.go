@@ -13,13 +13,13 @@ import (
 func Get(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
-		context.JSON(http.StatusCreated, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
 	user, err := repositories.GetUserById(id)
 	if err != nil {
-		context.JSON(http.StatusCreated, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 

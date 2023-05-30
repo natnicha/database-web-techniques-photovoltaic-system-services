@@ -27,7 +27,7 @@ func Login(context *gin.Context) {
 
 	user, err := repositories.GetUserByEmail(reqBody.Email)
 	if err != nil {
-		context.JSON(http.StatusCreated, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
@@ -39,9 +39,11 @@ func Login(context *gin.Context) {
 
 	jwt, err := generateJWT(user.Id)
 	if err != nil {
-		context.JSON(http.StatusCreated, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
+
+	repositories.CreateLogin(user.Id)
 	context.JSON(http.StatusOK, gin.H{"access_token": jwt})
 }
 
