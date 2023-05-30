@@ -8,19 +8,21 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/mcuadros/go-defaults"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type requestBody struct {
 	FirstName string `json:"first_name" validate:"required"`
-	LastName  string `json:"last_name" validate:"required"`
-	Email     string `json:"email" validate:"required,email"`
-	Password  string `json:"password" validate:"required"`
-	IsActive  bool   `json:"is_active" default:"true"`
+	LastName  string `json:"last_name"  validate:"required"`
+	Email     string `json:"email"      validate:"required,email"`
+	Password  string `json:"password"   validate:"required"`
+	IsActive  bool   `json:"is_active"  default:"true"`
 }
 
 func Create(context *gin.Context) {
-	var reqBody requestBody
+	reqBody := new(requestBody)
+	defaults.SetDefaults(reqBody)
 	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
@@ -46,7 +48,7 @@ func Create(context *gin.Context) {
 		return
 	}
 
-	user, err := prepareUserInfo(reqBody)
+	user, err := prepareUserInfo(*reqBody)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
@@ -77,6 +79,7 @@ func prepareUserInfo(reqBody requestBody) (user repositories.Users, err error) {
 		LastName:  reqBody.LastName,
 		Email:     reqBody.Email,
 		Password:  hashPassword,
+		IsActive:  reqBody.IsActive,
 		UpdateAt:  time.Now(),
 	}
 	return user, nil
