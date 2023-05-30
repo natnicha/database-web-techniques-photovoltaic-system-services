@@ -23,7 +23,7 @@ func ValidateJWT(context *gin.Context) error {
 	return errors.New("invalid token provided")
 }
 
-func CurrentUser(context *gin.Context) (*repositories.Users, error) {
+func GetCurrentUser(context *gin.Context) (*repositories.Users, error) {
 	err := ValidateJWT(context)
 	if err != nil {
 		return nil, err
