@@ -56,7 +56,7 @@ func Create(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"data": userResult})
+	context.JSON(http.StatusCreated, gin.H{"data": userResult})
 }
 
 func validateEmailFormat(email string) bool {
