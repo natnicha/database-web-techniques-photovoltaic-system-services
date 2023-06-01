@@ -7,22 +7,33 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+	"github.com/mcuadros/go-defaults"
 )
 
 type requestBody struct {
-	Name        string    `json:"name"`
+	Name        string    `json:"name" validate:"required"`
 	Description string    `json:"description"`
-	IsPrinted   bool      `json:"is_printed"`
-	IsActive    bool      `json:"is_active"`
 	StartAt     time.Time `json:"start_at"`
+	IsPrinted   bool      `json:"is_printed" default:"false"`
 }
 
 func Create(context *gin.Context) {
-	var reqBody requestBody
+	reqBody := new(requestBody)
+	defaults.SetDefaults(reqBody)
+
 	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
+	}
+
+	err = validateStruct(reqBody)
+	if err != nil {
+		for _, e := range err.(validator.ValidationErrors) {
+			context.JSON(http.StatusBadRequest, gin.H{"error": e.Error()})
+			return
+		}
 	}
 
 	user, err := auth.GetCurrentUser(context)
@@ -32,12 +43,11 @@ func Create(context *gin.Context) {
 	}
 	project, err := repositories.CreateProject(
 		repositories.Projects{
-			Name:        reqBody.Name,
 			UserId:      user.Id,
+			Name:        reqBody.Name,
 			Description: reqBody.Description,
-			IsPrinted:   reqBody.IsPrinted,
-			IsActive:    reqBody.IsActive,
 			StartAt:     reqBody.StartAt,
+			IsPrinted:   reqBody.IsPrinted,
 		},
 	)
 	if err != nil {
@@ -45,4 +55,9 @@ func Create(context *gin.Context) {
 		return
 	}
 	context.JSON(http.StatusCreated, gin.H{"data": project})
+}
+
+func validateStruct(obj interface{}) error {
+	v := validator.New()
+	return v.Struct(obj)
 }

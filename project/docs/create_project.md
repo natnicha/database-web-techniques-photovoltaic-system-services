@@ -37,9 +37,8 @@ To create a new project according to body parameters for a specific user
 | ------------ | -------- | -------- | --------------- | --------------------------------------------------------------------------------------- |
 | name         | string   | true     |                 | a project name                                                                          |
 | description  | string   | false    |                 | a project description                                                                   |
-| is_printed   | boolean  | false    | false           | In order to generate report, set to be `true` to export a report                        |
-| is_active    | boolean  | false    | true            | In order to activate this new project, set to be `true` to activate. Otherwise, `false` |
 | star_at      | datetime | false    | Now()           | In order to activate this new user, set to be `true` to activate. Otherwise, `false`    |
+| is_printed   | boolean  | false    | false           | In order to generate report, set to be `true` to export a report                        |
 
 
 ## Sample Request(s) 
@@ -51,7 +50,6 @@ url = /api/v1/project/create
     "name": "Europe",
     "description": "located in central Europe",
     "is_printed": false,
-    "is_active": true,
     "star_at": "2023-05-30T00:00:01"
 }
 ```
@@ -65,9 +63,8 @@ HTTP status 201 Created
         "name": "Europe",
         "user_id": 1,
         "description": "located in central Europe",
-        "is_printed": false,
-        "is_active": true,
-        "star_at": "2023-05-30T00:00:01"
+        "star_at": "2023-05-30T00:00:01",
+        "is_printed": false
     }
 }
 ```

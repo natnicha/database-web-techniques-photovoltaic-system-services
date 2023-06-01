@@ -10,9 +10,8 @@ type Projects struct {
 	UserId      int       `json:"user_id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
-	IsPrinted   bool      `json:"is_printed"`
-	IsActive    bool      `json:"is_active"`
 	StartAt     time.Time `json:"start_at"`
+	IsPrinted   bool      `json:"is_printed"`
 }
 
 func CreateProject(project Projects) (*Projects, error) {
