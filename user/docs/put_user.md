@@ -60,7 +60,14 @@ url = /api/v1/user/update
 ### A success response updating a password
 HTTP status 200 OK
 ```json
-null
+{
+  "id": "1",
+  "first_name" : "Gloria",
+  "last_name" : "Bonner",
+  "email" : "gloria.bonner@gmail.com",
+  "password" : "1234",
+  "is_active" : "true"
+}
 ```
 
 ### A success response updating user information
