@@ -10,6 +10,7 @@ type Help interface {
 	Create(context *gin.Context)
 	Update(context *gin.Context)
 	Delete(context *gin.Context)
+	Get(context *gin.Context)
 }
 
 func Create(context *gin.Context) {
@@ -22,4 +23,8 @@ func Update(context *gin.Context) {
 
 func Delete(context *gin.Context) {
 	controller.Delete(context)
+}
+
+func Get(context *gin.Context) {
+	controller.Get(context)
 }

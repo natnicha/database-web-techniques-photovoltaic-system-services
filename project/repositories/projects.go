@@ -16,6 +16,19 @@ type Projects struct {
 	UpdateAt    time.Time `json:"update_at"`
 }
 
+type ListRequest struct {
+	Filter  *Filter `form:"filter"`
+	Limit   int     `form:"limit" binding:"required,min=1"`
+	Offset  int     `form:"offset" binding:"required"`
+	OrderBy string  `form:"order_by"`
+	Order   string  `form:"order"`
+}
+
+type Filter struct {
+	key   string `form:"filter"`
+	value string `form:"limit" binding:"required,min=1"`
+}
+
 func CreateProject(project Projects) (*Projects, error) {
 	result := db.Database.Create(&project)
 	if result.Error != nil {
@@ -51,4 +64,32 @@ func DeleteProjectById(id int) (err error) {
 		return err
 	}
 	return nil
+}
+
+func GetProject(query ListRequest) (*[]Projects, error) {
+	tx := db.Database.Model(&Projects{})
+	if query.Offset > 0 {
+		tx.Offset(query.Offset)
+	}
+	if query.Limit > 0 {
+		tx.Limit(query.Limit)
+	}
+	if query.OrderBy != "" {
+		if query.Order != "" {
+			tx.Order(query.OrderBy + " " + query.Order)
+		} else {
+			tx.Order(query.OrderBy + " ASC")
+		}
+	}
+	// TODO add filter
+	// if query.Filter != nil {
+	// 	tx.Statement.Where(query.Filter.key + " = " + query.Filter.value)
+	// }
+
+	projects := []Projects{}
+	result := tx.Find(&projects)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &projects, nil
 }

@@ -37,6 +37,7 @@ func serveApplication() {
 	project.POST("/create", Project.Create)
 	project.POST("/update/:id", Project.Update)
 	project.DELETE("/delete/:id", Project.Delete)
+	project.GET("/", Project.Get)
 
 	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))
