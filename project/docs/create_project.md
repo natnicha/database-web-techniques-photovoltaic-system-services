@@ -47,10 +47,10 @@ url = /api/v1/project/create
 ```
 ```json
 {
-    "name": "Europe",
-    "description": "located in central Europe",
-    "is_printed": false,
-    "star_at": "2023-05-30T00:00:01Z"
+  "name": "Europe",
+  "description": "located in central Europe",
+  "is_printed": false,
+  "star_at": "2023-05-30T00:00:01Z"
 }
 ```
 
@@ -60,12 +60,13 @@ HTTP status 201 Created
 ```json
 {
   "data": {
-        "name": "Europe",
-        "user_id": 1,
-        "description": "located in central Europe",
-        "star_at": "2023-05-30T00:00:01Z",
-        "is_printed": false
-    }
+    "id": 1,
+    "name": "Europe",
+    "user_id": 1,
+    "description": "located in central Europe",
+    "star_at": "2023-05-30T00:00:01Z",
+    "is_printed": false
+  }
 }
 ```
 
