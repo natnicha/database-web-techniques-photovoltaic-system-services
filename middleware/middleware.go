@@ -21,6 +21,13 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			context.Abort()
 			return
 		}
+		user, err := CurrentUser(context)
+		if err != nil {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "get user ID failed"})
+			context.Abort()
+			return
+		}
+		context.Set("user-id", user.Id)
 		context.Next()
 	}
 }

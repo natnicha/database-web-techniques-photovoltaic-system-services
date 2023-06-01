@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	auth "photovoltaic-system-services/auth/controller"
 	"photovoltaic-system-services/project/repositories"
 	"time"
 
@@ -36,14 +35,10 @@ func Create(context *gin.Context) {
 		}
 	}
 
-	user, err := auth.GetCurrentUser(context)
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
+	userId, _ := context.Get("user-id")
 	project, err := repositories.CreateProject(
 		repositories.Projects{
-			UserId:      user.Id,
+			UserId:      userId.(int),
 			Name:        reqBody.Name,
 			Description: reqBody.Description,
 			StartAt:     reqBody.StartAt,
