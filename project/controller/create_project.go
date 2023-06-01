@@ -13,7 +13,7 @@ import (
 type requestBody struct {
 	Name        string    `json:"name" validate:"required"`
 	Description string    `json:"description"`
-	StartAt     time.Time `json:"start_at"`
+	StartAt     time.Time `json:"start_at" validate:"required"`
 	IsPrinted   bool      `json:"is_printed" default:"false"`
 }
 
