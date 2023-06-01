@@ -6,7 +6,7 @@ To create a new user according to body parameters
 
 | ** Method **    | POST                    | 
 | --------------- | ----------------------- | 
-| ** Structure ** | `/api/v1/user/create`   |
+| ** Structure ** | `/auth/register`        |
 
 
 ## Path Parameters
@@ -42,7 +42,7 @@ To create a new user according to body parameters
 
 ## Sample Request(s) 
 ```
-url = /api/v1/user/create
+url = /auth/register
 ```
 ```json
 {
@@ -56,25 +56,54 @@ url = /api/v1/user/create
 
 ## Sample Response(s)
 ### A success Response
+HTTP status 201 Created
 ```json
 {
-  "status" : "SUCCESS",
-  "code" : 201,
   "data": {
     "id" : "1",
     "first_name" : "Gloria",
     "last_name" : "Bonner",
     "email" : "gloria.bonner@gmail.com",
+    "password" : "$2a$10$RqZ3UIVfsSM/jP/dO3.5.u2OxuJBU29YvPlYQdPg1cnTax4D8Ny7C",
     "is_active" : "true"
   }
 }
 ```
 
 ### An error response (case: missing first name)
+HTTP status 400 Bad Request
+```json
+null
+```
+
+### An error response (case: missing required first name)
+HTTP status 400 Bad Request
 ```json
 {
-  "status" : "ERROR",
-  "code" : 400,
-  "message" : "Bad Request"
+  "error": "Key: 'requestBody.FirstName' Error:Field validation for 'FirstName' failed on the 'required' tag"
+}
+```
+
+### An error response (case: invalid email format)
+HTTP status 400 Bad Request
+```json
+{
+  "error": "Key: 'requestBody.Email' Error:Field validation for 'Email' failed on the 'email' tag"
+}
+```
+
+### An error response (case: unsupported driver)
+HTTP status 500 Internal Server Error
+```json
+{
+  "error": "unsupported driver"
+}
+```
+
+### An error response (case: conflict email in the system)
+HTTP status 409 Conflict
+```json
+{
+  "error": "The email is already assigned in the system"
 }
 ```

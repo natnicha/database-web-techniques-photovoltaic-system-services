@@ -1,12 +1,12 @@
-# [DELTE] Delete an Existing User  
+# [GET] Get User Information 
 
-To delete an existing user by user ID
+To get user information such as first name, last name, email, etc.
 
 ## URL
 
-| ** Method **    | DELETE                       | 
-| --------------- | ---------------------------- | 
-| ** Structure ** | `/api/v1/user/delete/{id}`   |
+| ** Method **    | GET                       | 
+| --------------- | ------------------------- | 
+| ** Structure ** | `/api/v1/user`            |
 
 
 ## Path Parameters
@@ -27,7 +27,7 @@ To delete an existing user by user ID
 
 | Key                 | Type       | Required  | Description                    |
 | ------------------- | :--------: | :-------: | ------------------------------ |
-|                     |            |           |                                |
+| Authorization       | string     | true      | A bearer token is required     |
 
 
 ## Body Parameters
@@ -38,24 +38,39 @@ To delete an existing user by user ID
 
 
 ## Sample Request(s) 
+
+### A sample request according to user ID from authorization token
 ```
-url = /api/v1/user/delete/1
+url = /api/v1/user
 ```
 
-## Sample Response(s)
-### A success Response
+## Sample Response(s) 
+### A success response
+HTTP status 200 OK
 ```json
 {
-  "status" : "SUCCESS",
-  "code" : 200
+  "data": {
+    "id" : "1",
+    "first_name" : "Gloria",
+    "last_name" : "Bonner",
+    "email" : "gloria.bonner@gmail.com",
+    "is_active" : "true"
+  }
 }
 ```
 
-### An error response (case: user ID doesn't exist)
+### A success response (case: data doesn't exist)
+HTTP status 404 Not Found
 ```json
 {
-  "status" : "ERROR",
-  "code" : 400,
-  "message" : "Bad Request"
+  "error": "user 1 does not exist"
+}
+```
+
+### An error response (case: unsupported driver)
+HTTP status 500 Internal Server Error
+```json
+{
+  "error": "unsupported driver"
 }
 ```

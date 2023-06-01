@@ -1,19 +1,19 @@
-# [GET] Get User Information 
+# [DELTE] Delete an Existing User  
 
-To get user information such as first name, last name, email, etc.
+To delete an existing user by authorization token
 
 ## URL
 
-| ** Method **    | GET                       | 
-| --------------- | ------------------------- | 
-| ** Structure ** | `/api/v1/user/{id}`       |
+| ** Method **    | DELETE                       | 
+| --------------- | ---------------------------- | 
+| ** Structure ** | `/api/v1/user/delete`        |
 
 
 ## Path Parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-| id        | integer   | true         | user ID                         |
+|           |           |              |                                 |
 
 
 ## Query Parameters
@@ -27,7 +27,7 @@ To get user information such as first name, last name, email, etc.
 
 | Key                 | Type       | Required  | Description                    |
 | ------------------- | :--------: | :-------: | ------------------------------ |
-|                     |            |           |                                |
+| Authorization       | string     | true      | A bearer token is required     |
 
 
 ## Body Parameters
@@ -37,25 +37,28 @@ To get user information such as first name, last name, email, etc.
 |            |         |          |                 |                   |
 
 
-## Sample Request(s) 
-
-### A sample request where user ID = 1
+## Sample Request(s)
 ```
-url = /api/v1/user/1
+url = /api/v1/user/delete
 ```
 
-## Sample Response(s) 
-### A success response
+## Sample Response(s)
+### A success Response
+HTTP status 200 OK
+```json
+null
+```
+
+### An error response (case: user ID doesn't exist)
+HTTP status 400 Bad Request
+```json
+null
+```
+
+### An error response (case: unsupported driver)
+HTTP status 500 Internal Server Error
 ```json
 {
-  "status" : "SUCCESS",
-  "code" : 200,
-  "data": {
-    "id" : "1",
-    "first_name" : "Gloria",
-    "last_name" : "Bonner",
-    "email" : "gloria.bonner@gmail.com",
-    "is_active" : "true"
-  }
+  "error": "unsupported driver"
 }
 ```
