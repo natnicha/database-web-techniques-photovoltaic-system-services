@@ -1,19 +1,19 @@
 # [DELTE] Delete an Existing User  
 
-To delete an existing user by user ID
+To delete an existing user by authorization token
 
 ## URL
 
 | ** Method **    | DELETE                       | 
 | --------------- | ---------------------------- | 
-| ** Structure ** | `/api/v1/user/delete/{id}`   |
+| ** Structure ** | `/api/v1/user/delete`        |
 
 
 ## Path Parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-| id        | integer   | true         | user ID                         |
+|           |           |              |                                 |
 
 
 ## Query Parameters
@@ -39,7 +39,7 @@ To delete an existing user by user ID
 
 ## Sample Request(s)
 ```
-url = /api/v1/user/delete/1
+url = /api/v1/user/delete
 ```
 
 ## Sample Response(s)

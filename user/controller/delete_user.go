@@ -9,8 +9,8 @@ import (
 )
 
 func Delete(context *gin.Context) {
-	id := context.Param("id")
-	err := repositories.DeleteUserById(id)
+	userId, _ := context.Get("user-id")
+	err := repositories.DeleteUserById(userId.(string))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return

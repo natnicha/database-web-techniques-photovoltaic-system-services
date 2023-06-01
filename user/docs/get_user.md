@@ -6,14 +6,14 @@ To get user information such as first name, last name, email, etc.
 
 | ** Method **    | GET                       | 
 | --------------- | ------------------------- | 
-| ** Structure ** | `/api/v1/user/{id}`       |
+| ** Structure ** | `/api/v1/user`            |
 
 
 ## Path Parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-| id        | integer   | true         | user ID                         |
+|           |           |              |                                 |
 
 
 ## Query Parameters
@@ -39,9 +39,9 @@ To get user information such as first name, last name, email, etc.
 
 ## Sample Request(s) 
 
-### A sample request where user ID = 1
+### A sample request according to user ID from authorization token
 ```
-url = /api/v1/user/1
+url = /api/v1/user
 ```
 
 ## Sample Response(s) 

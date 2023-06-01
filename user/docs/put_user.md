@@ -1,4 +1,4 @@
-# [PUT] Update an existing User  
+# [PUT] Update an Existing User  
 
 To update an existing user according to body parameters
 
@@ -6,14 +6,14 @@ To update an existing user according to body parameters
 
 | ** Method **    | PUT                          | 
 | --------------- | ---------------------------- | 
-| ** Structure ** | `/api/v1/user/update/{id}`   |
+| ** Structure ** | `/api/v1/user/update`        |
 
 
 ## Path Parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-| id        | integer   | true         | user ID                         |
+|           |           |              |                                 |
 
 
 ## Query Parameters
@@ -42,23 +42,9 @@ To update an existing user according to body parameters
 | is_active  | boolean | false    | true            | In order to activate this new user, set to be `true` to activate. Otherwise, `false`  |
 
 ## Sample Request(s) 
-### A sample request to update a password where user ID = 1 
+### A sample request to update a password according to user ID from authorization token
 ```
-url = /api/v1/user/update/1
-```
-```json
-{
-  "first_name" : "Gloria",
-  "last_name" : "Bonner",
-  "email" : "gloria.bonner@gmail.com",
-  "password" : "1234",
-  "is_active" : "true"
-}
-```
-
-### A sample request to update user information where user ID = 1 
-```
-url = /api/v1/user/update/1
+url = /api/v1/user/update
 ```
 ```json
 {

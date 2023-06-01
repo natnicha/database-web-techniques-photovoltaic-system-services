@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"photovoltaic-system-services/user/repositories"
 
@@ -28,12 +27,7 @@ func Update(context *gin.Context) {
 		}
 	}
 
-	id, err := strconv.Atoi(context.Param("id"))
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
-		return
-	}
-
+	userId, _ := context.Get("user-id")
 	existingUser, err := repositories.GetUserByEmail(reqBody.Email)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -41,7 +35,7 @@ func Update(context *gin.Context) {
 	}
 
 	if existingUser != nil {
-		if existingUser.Id != id {
+		if existingUser.Id != userId {
 			context.JSON(http.StatusConflict, gin.H{"error": "The email is already assigned in the system"})
 			return
 		}
@@ -53,7 +47,7 @@ func Update(context *gin.Context) {
 		return
 	}
 
-	updatedUser, err := repositories.UpdateUser(id, user)
+	updatedUser, err := repositories.UpdateUser(userId.(int), user)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
