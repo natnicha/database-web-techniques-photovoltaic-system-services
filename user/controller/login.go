@@ -21,13 +21,13 @@ func Login(context *gin.Context) {
 	var reqBody loginRequestBody
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err})
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	user, err := repositories.GetUserByEmail(reqBody.Email)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -39,7 +39,7 @@ func Login(context *gin.Context) {
 
 	jwt, err := generateJWT(user.Id)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

@@ -15,7 +15,7 @@ func Update(context *gin.Context) {
 	defaults.SetDefaults(reqBody)
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err})
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -30,7 +30,7 @@ func Update(context *gin.Context) {
 	userId, _ := context.Get("user-id")
 	existingUser, err := repositories.GetUserByEmail(reqBody.Email)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -43,13 +43,13 @@ func Update(context *gin.Context) {
 
 	user, err := prepareUserInfo(*reqBody)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	updatedUser, err := repositories.UpdateUser(userId.(int), user)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

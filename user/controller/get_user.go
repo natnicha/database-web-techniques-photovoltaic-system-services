@@ -12,7 +12,7 @@ func Get(context *gin.Context) {
 	userId, _ := context.Get("user-id")
 	user, err := repositories.GetUserById(userId.(int))
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

@@ -23,7 +23,7 @@ func Create(context *gin.Context) {
 
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err})
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -46,7 +46,7 @@ func Create(context *gin.Context) {
 		},
 	)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	context.JSON(http.StatusCreated, gin.H{"data": project})

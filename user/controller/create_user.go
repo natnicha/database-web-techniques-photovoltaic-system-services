@@ -25,7 +25,7 @@ func Create(context *gin.Context) {
 	defaults.SetDefaults(reqBody)
 	err := context.BindJSON(&reqBody)
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": err})
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -39,7 +39,7 @@ func Create(context *gin.Context) {
 
 	existingUser, err := repositories.GetUserByEmail(reqBody.Email)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -50,13 +50,13 @@ func Create(context *gin.Context) {
 
 	user, err := prepareUserInfo(*reqBody)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	userResult, err := repositories.CreateUser(user)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
