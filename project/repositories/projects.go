@@ -44,3 +44,11 @@ func UpdateProject(projectId int, project Projects) (*Projects, error) {
 	}
 	return &project, nil
 }
+
+func DeleteProjectById(id int) (err error) {
+	result := db.Database.Where("id = ?", id).Delete(Projects{})
+	if result.Error != nil {
+		return err
+	}
+	return nil
+}
