@@ -29,9 +29,9 @@ func serveApplication() {
 	apiV1 := router.Group("/api/v1")
 	apiV1.Use(Middleware.JWTAuthMiddleware())
 	user := apiV1.Group("/user")
-	user.GET("/:id", User.Get)
-	user.PUT("/update/:id", User.Update)
-	user.DELETE("/delete/:id", User.Delete)
+	user.GET("/", User.Get)
+	user.PUT("/update", User.Update)
+	user.DELETE("/delete", User.Delete)
 
 	project := apiV1.Group("/project")
 	project.POST("/create", Project.Create)

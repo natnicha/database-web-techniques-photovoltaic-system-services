@@ -37,8 +37,8 @@ To update an existing user according to body parameters
 | ---------- | ------- | -------- | --------------- | ------------------------------------------------------------------------------------- |
 | first_name | string  | true     |                 | a user's first name                                                                   |
 | last_name  | string  | true     |                 | a user's last name                                                                    |
-| email      | string  | true     |                 | a user's email using for login to application                                         |
-| password   | string  | true     |                 | a user's password using for login to application                                      |
+| email      | string  | true     |                 | a user's email using to login to an application                                         |
+| password   | string  | true     |                 | a user's password using to login to an application                                      |
 | is_active  | boolean | false    | true            | In order to activate this new user, set to be `true` to activate. Otherwise, `false`  |
 
 ## Sample Request(s) 
