@@ -31,6 +31,11 @@ func Login(context *gin.Context) {
 		return
 	}
 
+	if user == nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "no user account or an user account has been deleted"})
+		return
+	}
+
 	isPasswordCorrect := validatePassword(user.Password, reqBody.Password)
 	if !isPasswordCorrect {
 		context.JSON(http.StatusUnauthorized, gin.H{"error": "incorrect email or password"})

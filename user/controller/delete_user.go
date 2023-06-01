@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 
 	"photovoltaic-system-services/user/repositories"
@@ -10,7 +11,7 @@ import (
 
 func Delete(context *gin.Context) {
 	userId, _ := context.Get("user-id")
-	err := repositories.DeleteUserById(userId.(string))
+	err := repositories.DeleteUserById(fmt.Sprint(userId))
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
