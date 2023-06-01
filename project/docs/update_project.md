@@ -13,7 +13,7 @@ To update an existing project according to body parameters for a specific user i
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-|           |           |              |                                 |
+| id        | integer   | true         | a project ID to delete          |
 
 
 ## Query Parameters
@@ -43,7 +43,7 @@ To update an existing project according to body parameters for a specific user i
 
 ## Sample Request(s) 
 ```
-url = /api/v1/project/update
+url = /api/v1/project/update/1
 ```
 ```json
 {
@@ -75,6 +75,14 @@ HTTP status 200 OK
 HTTP status 400 Bad Request
 ```json
 null
+```
+
+### An error response (case: a project ID doesn't belong to user ID in authorization token)
+HTTP status 409 Conflict
+```json
+{
+  "error": "a project ID doesn't belong to a user ID"
+}
 ```
 
 ### An error response (case: unsupported driver)
