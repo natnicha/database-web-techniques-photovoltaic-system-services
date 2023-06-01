@@ -49,12 +49,6 @@ HTTP status 200 OK
 null
 ```
 
-### An error response (case: user ID doesn't exist)
-HTTP status 400 Bad Request
-```json
-null
-```
-
 ### An error response (case: unsupported driver)
 HTTP status 500 Internal Server Error
 ```json
