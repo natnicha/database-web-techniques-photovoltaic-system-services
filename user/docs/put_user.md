@@ -67,7 +67,6 @@ HTTP status 200 OK
   "email" : "gloria.bonner@gmail.com",
   "password" : "1234",
   "is_active" : "true",
-  "updated_at": "2023-06-01T00:00:00.00+02:00" 
 }
 ```
 

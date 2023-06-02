@@ -1,12 +1,12 @@
-# [GET] Get Solar Panel Models
+# [GET] Get Products
 
-To get an existing solar panel according to query parameters
+To get an existing products according to query parameters for a specific user in authorization token
 
 ## URL
 
-| ** Method **    | GET                           | 
-| --------------- | ----------------------------- | 
-| ** Structure ** | `/api/v1/solar-panel-model`   |
+| ** Method **    | GET                    | 
+| --------------- | ---------------------- | 
+| ** Structure ** | `/api/v1/product`      |
 
 
 ## Path Parameters
@@ -20,8 +20,8 @@ To get an existing solar panel according to query parameters
 
 | Key                | Type      | Required  | Description                                                                                        |
 | ------------------ | :-------: | :-------: | -------------------------------------------------------------------------------------------------- |
-| filter             | array     | false     | to filter solar panel models for a specific condition e.g. id:1 means select only id = 1           |
-| limit              | int       | false     | to limit number of solar panel models                                                              |
+| filter             | array     | false     | to filter products for a specific condition e.g. id:1 means select only id = 1                     |
+| limit              | int       | false     | to limit number of products                                                                        |
 | offset             | int       | false     | to exclude from a response the first N items of a resource collection                              |
 | sort_by            | string    | false     | to specify a sorting column in a resource collection e.g. id                                       |
 | order_by           | string    | false     | to sort items specified in sort_by. Either `asc` for ascending sort or `desc` for descending sort  |
@@ -44,7 +44,7 @@ To get an existing solar panel according to query parameters
 
 ## Sample Request(s) 
 ```
-url = /api/v1/solar-panel-model?limit=2&offset=1&sort_by=id&order_by=asc
+url = /api/v1/product?limit=2&offset=1&sort_by=id&order_by=asc
 ```
 
 ## Sample Response(s)
@@ -54,16 +54,24 @@ HTTP status 200 OK
 {
   "data": [
     {
-      "id": 2,
-      "name": "Jinko Solar - Tiger Neo 78HC-BDV",
-      "description": "625 wp",
-      "efficiency": "22.3600",
+      "id": 1,
+      "project_id": 1,
+      "solar_panel_model_id": 1,
+      "orientation": "N",
+      "inclination": 5.25,
+      "area": 20,
+      "latitude": 50.8282,
+      "longitude": 12.9209,
     },    
     {
-      "id": 3,
-      "name": "Jinko Solar - Tiger Pro 72HC Monofacial",
-      "description": "540 wp",
-      "efficiency": "21.3500",
+      "id": 2,
+      "project_id": 1,
+      "solar_panel_model_id": 2,
+      "orientation": "N",
+      "inclination": 7.11,
+      "area": 45.7,
+      "latitude": 40.7128,
+      "longitude": 74.0060,
     }
   ]
 }

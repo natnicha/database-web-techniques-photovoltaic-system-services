@@ -1,19 +1,19 @@
-# [POST] Update an Existing Project  
+# [PUT] Update an Existing Project  
 
 To update an existing project according to body parameters for a specific user in authorization token
 
 ## URL
 
-| ** Method **    | POST                       | 
-| --------------- | -------------------------- | 
-| ** Structure ** | `/api/v1/project/update`   |
+| ** Method **    | PUT                            | 
+| --------------- | ------------------------------ | 
+| ** Structure ** | `/api/v1/project/update/{id}`  |
 
 
 ## Path Parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-| id        | integer   | true         | a project ID to delete          |
+| id        | integer   | true         | a project ID to update          |
 
 
 ## Query Parameters
@@ -66,7 +66,6 @@ HTTP status 200 OK
     "description": "located in central Europe",
     "star_at": "2023-05-30T00:00:01Z",
     "is_printed": false,
-    "updated_at": "2023-06-01T00:00:00.00+02:00"
   }
 }
 ```

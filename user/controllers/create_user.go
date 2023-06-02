@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"time"
 
 	"photovoltaic-system-services/user/repositories"
 
@@ -17,7 +16,6 @@ type requestBody struct {
 	LastName  string `json:"last_name"  validate:"required"`
 	Email     string `json:"email"      validate:"required,email"`
 	Password  string `json:"password"   validate:"required"`
-	IsActive  bool   `json:"is_active"  default:"true"`
 }
 
 func Create(context *gin.Context) {
@@ -79,8 +77,6 @@ func prepareUserInfo(reqBody requestBody) (user repositories.Users, err error) {
 		LastName:  reqBody.LastName,
 		Email:     reqBody.Email,
 		Password:  hashPassword,
-		IsActive:  reqBody.IsActive,
-		UpdateAt:  time.Now(),
 	}
 	return user, nil
 }

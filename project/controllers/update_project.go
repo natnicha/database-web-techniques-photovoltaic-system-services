@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"photovoltaic-system-services/project/repositories"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -42,11 +41,10 @@ func Update(context *gin.Context) {
 		Description: reqBody.Description,
 		StartAt:     reqBody.StartAt,
 		IsPrinted:   reqBody.IsPrinted,
-		UpdateAt:    time.Now(),
 	}
 	projectNum := repositories.CheckExistProject(projectId, project)
 	if projectNum == 0 {
-		context.JSON(http.StatusConflict, gin.H{"error": "No project ID with specified user ID"})
+		context.JSON(http.StatusConflict, gin.H{"error": "a project ID doesn't belong to a user ID"})
 		return
 	}
 	updatedProject, err := repositories.UpdateProject(projectId, project)

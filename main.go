@@ -9,9 +9,10 @@ import (
 
 	Database "photovoltaic-system-services/db"
 	Middleware "photovoltaic-system-services/middleware"
-	Project "photovoltaic-system-services/project/handler"
-	SolarPanel "photovoltaic-system-services/solar-panel-model/handler"
-	User "photovoltaic-system-services/user/handler"
+	Product "photovoltaic-system-services/product/handlers"
+	Project "photovoltaic-system-services/project/handlers"
+	SolarPanel "photovoltaic-system-services/solar-panel-model/handlers"
+	User "photovoltaic-system-services/user/handlers"
 )
 
 func main() {
@@ -31,17 +32,24 @@ func serveApplication() {
 	apiV1.Use(Middleware.JWTAuthMiddleware())
 	user := apiV1.Group("/user")
 	user.GET("/", User.Get)
-	user.PUT("/update", User.Update)
 	user.DELETE("/delete", User.Delete)
+	user.PUT("/update", User.Update)
 
 	project := apiV1.Group("/project")
-	project.POST("/create", Project.Create)
-	project.POST("/update/:id", Project.Update)
-	project.DELETE("/delete/:id", Project.Delete)
 	project.GET("/", Project.Get)
+	project.POST("/create", Project.Create)
+	project.DELETE("/delete/:id", Project.Delete)
+	project.PUT("/update/:id", Project.Update)
 
 	solarPanel := apiV1.Group("/solar-panel-model")
 	solarPanel.GET("/", SolarPanel.Get)
+
+	product := apiV1.Group("/product")
+	product.GET("/", Product.Get)
+	product.POST("/create", Product.Create)
+	product.DELETE("/delete/:id", Product.Delete)
+	product.PUT("/update/:id", Product.Update)
+
 	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))
 }
