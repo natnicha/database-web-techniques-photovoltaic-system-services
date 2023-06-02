@@ -4,7 +4,7 @@ To delete a project for a specific user in authorization token
 
 ## URL
 
-| ** Method **    | POST                          | 
+| ** Method **    | DELETE                        | 
 | --------------- | ----------------------------- | 
 | ** Structure ** | `/api/v1/project/delete/{id}` |
 

@@ -4,9 +4,9 @@ To get an existing project according to query parameters for a specific user in 
 
 ## URL
 
-| ** Method **    | POST                       | 
-| --------------- | -------------------------- | 
-| ** Structure ** | `/api/v1/project/update`   |
+| ** Method **    | GET                  | 
+| --------------- | -------------------- | 
+| ** Structure ** | `/api/v1/project`   |
 
 
 ## Path Parameters
@@ -44,7 +44,7 @@ To get an existing project according to query parameters for a specific user in 
 
 ## Sample Request(s) 
 ```
-url = /api/v1/project/update?filter=is_printed:true&limit=1&offset=2&sort_by=id&order_by=asc
+url = /api/v1/project?filter=is_printed:true&limit=1&offset=2&sort_by=id&order_by=asc
 ```
 
 ## Sample Response(s)
