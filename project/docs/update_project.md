@@ -36,7 +36,7 @@ To update an existing project according to body parameters for a specific user i
 | Field Name   | Type     | Required | Default Value   |  Description                                                       |
 | ------------ | -------- | -------- | --------------- | ------------------------------------------------------------------ |
 | name         | string   | true     |                 | a project name                                                     |
-| description  | string   | false    |                 | a project description                                              |
+| description  | string   | false    | `blank`         | a project description                                              |
 | star_at      | datetime | true     |                 | a starting project date in format YYYY-MM-DDThh:mm:dd e.g. 2023-05-30T00:00:01 |
 | is_printed   | boolean  | false    | false           | In order to generate report, set to be `true` to export a report   |
 
