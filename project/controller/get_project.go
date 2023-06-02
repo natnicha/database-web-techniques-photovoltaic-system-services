@@ -9,18 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type listAccountRequest struct {
-	limit  int32 `form:"limit" binding:"required,min=1"`
-	offset int32 `form:"offset" binding:"required,min=0"`
-}
-
 func Get(context *gin.Context) {
-	var req listAccountRequest
-	if err := context.ShouldBindQuery(&req); err != nil {
-		context.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
-
 	queryParams := context.Request.URL.Query()
 	query, err := getQuery(queryParams)
 	if err != nil {
