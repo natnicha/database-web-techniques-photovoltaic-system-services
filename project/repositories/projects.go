@@ -1,7 +1,6 @@
 package repositories
 
 import (
-	"errors"
 	"photovoltaic-system-services/db"
 	"strings"
 	"time"
@@ -41,13 +40,7 @@ func CheckExistProject(projectId int, project Projects) int64 {
 
 func UpdateProject(projectId int, project Projects) (*Projects, error) {
 	project.Id = projectId
-	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId)
-	var count int64
-	tx.Count(&count)
-	if count == 0 {
-		return nil, errors.New("No project ID with specified user ID ")
-	}
-	tx.Save(project)
+	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).Save(project)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
