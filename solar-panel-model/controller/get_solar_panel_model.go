@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 	"net/url"
-	"photovoltaic-system-services/project/repositories"
+	"photovoltaic-system-services/solar-panel-model/repositories"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ func Get(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
-	projects, err := repositories.GetProject(query)
+	projects, err := repositories.GetSolarPanelModel(query)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, err.Error())
 		return
