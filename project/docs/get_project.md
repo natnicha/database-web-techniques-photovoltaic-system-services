@@ -20,7 +20,7 @@ To get an existing project according to query parameters for a specific user in 
 
 | Key                | Type      | Required  | Description                                                                                                 |
 | ------------------ | :-------: | :-------: | ----------------------------------------------------------------------------------------------------------- |
-| filter             | array     | false     | to filter projects for a specific condition e.g. {"is_active": ["true"]} means select only is_active = true |
+| filter             | array     | false     | to filter projects for a specific condition e.g. is_printed:false means select only is_active = true |
 | limit              | int       | false     | to limit number of project for a specific user                                                              |
 | offset             | int       | false     | to exclude from a response the first N items of a resource collection                                       |
 | sort_by            | string    | false     | to specify a sorting column in a resource collection e.g. id, start_at                                      |
@@ -44,7 +44,7 @@ To get an existing project according to query parameters for a specific user in 
 
 ## Sample Request(s) 
 ```
-url = /api/v1/project/update?filter={"is_active": ["true"]}&limit=1&offset=2&sort_by=id&order_by=asc
+url = /api/v1/project/update?filter=is_printed:true&limit=1&offset=2&sort_by=id&order_by=asc
 ```
 
 ## Sample Response(s)

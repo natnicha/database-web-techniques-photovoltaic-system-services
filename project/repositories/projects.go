@@ -3,6 +3,7 @@ package repositories
 import (
 	"errors"
 	"photovoltaic-system-services/db"
+	"strings"
 	"time"
 )
 
@@ -17,16 +18,11 @@ type Projects struct {
 }
 
 type ListRequest struct {
-	Filter  *Filter `form:"filter"`
-	Limit   int     `form:"limit" binding:"required,min=1"`
-	Offset  int     `form:"offset" binding:"required"`
-	OrderBy string  `form:"order_by"`
-	SortBy  string  `form:"sort_by"`
-}
-
-type Filter struct {
-	key   string `form:"filter"`
-	value string `form:"limit" binding:"required,min=1"`
+	Filter  string `form:"filter"`
+	Limit   int    `form:"limit" binding:"required,min=1"`
+	Offset  int    `form:"offset" binding:"required"`
+	OrderBy string `form:"order_by"`
+	SortBy  string `form:"sort_by"`
 }
 
 func CreateProject(project Projects) (*Projects, error) {
@@ -68,6 +64,10 @@ func DeleteProjectById(id int) (err error) {
 
 func GetProject(query ListRequest) (*[]Projects, error) {
 	tx := db.Database.Model(&Projects{})
+	if len(query.Filter) > 0 {
+		filters := strings.Split(query.Filter, ":")
+		tx.Where(filters[0] + " = " + filters[1])
+	}
 	if query.Offset > 0 {
 		tx.Offset(query.Offset)
 	}
@@ -80,12 +80,9 @@ func GetProject(query ListRequest) (*[]Projects, error) {
 		} else {
 			tx.Order(query.SortBy + " ASC")
 		}
+	} else {
+		tx.Order(" id ASC")
 	}
-	// TODO add filter
-	// if query.Filter != nil {
-	// 	tx.Statement.Where(query.Filter.key + " = " + query.Filter.value)
-	// }
-
 	projects := []Projects{}
 	result := tx.Find(&projects)
 	if result.Error != nil {
