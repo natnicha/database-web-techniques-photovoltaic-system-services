@@ -36,7 +36,7 @@ func serveApplication() {
 
 	project := apiV1.Group("/project")
 	project.POST("/create", Project.Create)
-	project.POST("/update/:id", Project.Update)
+	project.PUT("/update/:id", Project.Update)
 	project.DELETE("/delete/:id", Project.Delete)
 	project.GET("/", Project.Get)
 

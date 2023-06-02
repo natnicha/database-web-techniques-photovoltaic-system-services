@@ -1,12 +1,12 @@
-# [POST] Update an Existing Project  
+# [PUT] Update an Existing Project  
 
 To update an existing project according to body parameters for a specific user in authorization token
 
 ## URL
 
-| ** Method **    | POST                       | 
-| --------------- | -------------------------- | 
-| ** Structure ** | `/api/v1/project/update`   |
+| ** Method **    | PUT                            | 
+| --------------- | ------------------------------ | 
+| ** Structure ** | `/api/v1/project/update/{id}`  |
 
 
 ## Path Parameters
