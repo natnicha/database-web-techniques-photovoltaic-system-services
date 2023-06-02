@@ -41,7 +41,7 @@ func CreateUser(user Users) (*Users, error) {
 
 func UpdateUser(id int, user Users) (*Users, error) {
 	user.Id = id
-	tx := db.Database.Model(&user).Save(user)
+	tx := db.Database.Model(&user).UpdateColumn("update_at", "now()").Save(user)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

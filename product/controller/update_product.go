@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"photovoltaic-system-services/product/repositories"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -36,7 +35,6 @@ func Update(context *gin.Context) {
 		Inclination:       reqBody.Inclination,
 		Area:              reqBody.Area,
 		Geolocation:       reqBody.Geolocation,
-		UpdateAt:          time.Now(),
 	}
 	userId, _ := context.Get("user-id")
 	projectNum := repositories.CheckExistProject(reqBody.ProjectId, userId.(int))

@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"photovoltaic-system-services/project/repositories"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -42,7 +41,6 @@ func Update(context *gin.Context) {
 		Description: reqBody.Description,
 		StartAt:     reqBody.StartAt,
 		IsPrinted:   reqBody.IsPrinted,
-		UpdateAt:    time.Now(),
 	}
 	projectNum := repositories.CheckExistProject(projectId, project)
 	if projectNum == 0 {

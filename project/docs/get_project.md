@@ -60,7 +60,6 @@ HTTP status 200 OK
       "description": "located in west Europe",
       "star_at": "2023-05-30T00:00:01Z",
       "is_printed": true,
-      "updated_at": "2023-06-01T00:00:00.00+02:00"
     },    
     {
       "id": 5,
@@ -69,7 +68,6 @@ HTTP status 200 OK
       "description": "located in north Europe",
       "star_at": "2023-05-30T00:00:01Z",
       "is_printed": true,
-      "updated_at": "2023-06-01T00:00:00.00+02:00"
     }
   ]
 }

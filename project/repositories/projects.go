@@ -13,7 +13,6 @@ type Projects struct {
 	Description string    `json:"description"`
 	StartAt     time.Time `json:"start_at"`
 	IsPrinted   bool      `json:"is_printed"`
-	UpdateAt    time.Time `json:"update_at"`
 }
 
 type ListRequest struct {
@@ -40,7 +39,7 @@ func CheckExistProject(projectId int, project Projects) int64 {
 
 func UpdateProject(projectId int, project Projects) (*Projects, error) {
 	project.Id = projectId
-	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).Save(project)
+	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).UpdateColumn("update_at", "now()").Save(project)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

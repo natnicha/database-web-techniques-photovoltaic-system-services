@@ -66,7 +66,6 @@ HTTP status 200 OK
     "description": "located in central Europe",
     "star_at": "2023-05-30T00:00:01Z",
     "is_printed": false,
-    "updated_at": "2023-06-01T00:00:00.00+02:00"
   }
 }
 ```
