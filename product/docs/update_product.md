@@ -73,6 +73,7 @@ HTTP status 200 OK
     "area": 20,
     "latitude": 50.8282,
     "longitude": 12.9209,
+    "updated_at": "2023-06-01T00:00:00.00+02:00"
   }
 }
 ```
