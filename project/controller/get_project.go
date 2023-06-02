@@ -39,8 +39,8 @@ func Get(context *gin.Context) {
 	query2 := repositories.ListRequest{
 		Limit:   limit,
 		Offset:  offset,
+		SortBy:  query["sort_by"][0],
 		OrderBy: query["order_by"][0],
-		Order:   query["order"][0],
 	}
 	projects, err := repositories.GetProject(query2)
 	if err != nil {

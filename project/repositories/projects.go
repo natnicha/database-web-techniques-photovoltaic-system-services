@@ -21,7 +21,7 @@ type ListRequest struct {
 	Limit   int     `form:"limit" binding:"required,min=1"`
 	Offset  int     `form:"offset" binding:"required"`
 	OrderBy string  `form:"order_by"`
-	Order   string  `form:"order"`
+	SortBy  string  `form:"sort_by"`
 }
 
 type Filter struct {
@@ -74,11 +74,11 @@ func GetProject(query ListRequest) (*[]Projects, error) {
 	if query.Limit > 0 {
 		tx.Limit(query.Limit)
 	}
-	if query.OrderBy != "" {
-		if query.Order != "" {
-			tx.Order(query.OrderBy + " " + query.Order)
+	if query.SortBy != "" {
+		if query.OrderBy != "" {
+			tx.Order(query.SortBy + " " + query.OrderBy)
 		} else {
-			tx.Order(query.OrderBy + " ASC")
+			tx.Order(query.SortBy + " ASC")
 		}
 	}
 	// TODO add filter

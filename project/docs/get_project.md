@@ -24,7 +24,7 @@ To get an existing project according to query parameters for a specific user in 
 | limit              | int       | false     | to limit number of project for a specific user                                                              |
 | offset             | int       | false     | to exclude from a response the first N items of a resource collection                                       |
 | sort_by            | string    | false     | to specify a sorting column in a resource collection e.g. id, start_at                                      |
-| order              | string    | false     | to sort items specified in sort_by. Either `asc` for ascending sort or `desc` for descending sort           |
+| order_by           | string    | false     | to sort items specified in sort_by. Either `asc` for ascending sort or `desc` for descending sort           |
 
 
 ## Header Parameters
@@ -44,7 +44,7 @@ To get an existing project according to query parameters for a specific user in 
 
 ## Sample Request(s) 
 ```
-url = /api/v1/project/update?filter={"is_active": ["true"]}limit=1&offset=2&sort_by=id&order=asc
+url = /api/v1/project/update?filter={"is_active": ["true"]}&limit=1&offset=2&sort_by=id&order_by=asc
 ```
 
 ## Sample Response(s)
