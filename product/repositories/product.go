@@ -37,6 +37,14 @@ func CheckExistProduct(productId int) int64 {
 	return count
 }
 
+func DeleteProductById(id int) (err error) {
+	result := db.Database.Where("id = ?", id).Delete(Product{})
+	if result.Error != nil {
+		return err
+	}
+	return nil
+}
+
 func UpdateProject(productId int, product Product) (*Product, error) {
 	product.Id = productId
 	tx := db.Database.Model(&product).Where("id = ?", productId).UpdateColumn("update_at", "now()").Save(product)
