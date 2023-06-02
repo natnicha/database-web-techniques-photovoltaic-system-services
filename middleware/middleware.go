@@ -10,7 +10,6 @@ import (
 
 type Help interface {
 	JWTAuthMiddleware() gin.HandlerFunc
-	CurrentUser(context *gin.Context) (*repositories.Users, error)
 }
 
 func JWTAuthMiddleware() gin.HandlerFunc {
@@ -21,9 +20,14 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 			context.Abort()
 			return
 		}
-		user, err := CurrentUser(context)
+		user, err := currentUser(context)
 		if err != nil {
 			context.JSON(http.StatusInternalServerError, gin.H{"error": "get user ID failed"})
+			context.Abort()
+			return
+		}
+		if user.Id == 0 {
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "no user account or an user account has been deleted"})
 			context.Abort()
 			return
 		}
@@ -32,6 +36,6 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-func CurrentUser(context *gin.Context) (*repositories.Users, error) {
+func currentUser(context *gin.Context) (*repositories.Users, error) {
 	return controller.GetCurrentUser(context)
 }
