@@ -50,11 +50,11 @@ HTTP status 200 OK
 null
 ```
 
-### An error response (case: a project ID doesn't belong to user ID in authorization token)
+### An error response (case: No specified product ID or a project ID doesn't belong to user ID in authorization token)
 HTTP status 409 Conflict
 ```json
 {
-  "error": "a project ID doesn't belong to a user ID"
+  "error": "No specified product ID or a project ID doesn't belong to a user ID"
 }
 ```
 
