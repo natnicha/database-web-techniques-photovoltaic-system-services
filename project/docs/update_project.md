@@ -13,7 +13,7 @@ To update an existing project according to body parameters for a specific user i
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-| id        | integer   | true         | a project ID to delete          |
+| id        | integer   | true         | a project ID to update          |
 
 
 ## Query Parameters
