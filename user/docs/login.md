@@ -50,7 +50,7 @@ url = /auth/login
 
 ## Sample Response(s)
 ### A success Response
-HTTP status 201 Created
+HTTP status 200 OK
 ```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlYXQiOjE2ODU0NTE4ODEsImlhdCI6MTY4NTQ1MTg4MSwiaWQiOjF9.r6aK1T9ZpBxbkbBahDIg7qIOHLoFV3sQgvwWssqGNqE"

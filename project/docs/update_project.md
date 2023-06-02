@@ -1,19 +1,19 @@
-# [POST] Create a New Project  
+# [POST] Update an Existing Project  
 
-To create a new project according to body parameters for a specific user
+To update an existing project according to body parameters for a specific user in authorization token
 
 ## URL
 
 | ** Method **    | POST                       | 
 | --------------- | -------------------------- | 
-| ** Structure ** | `/api/v1/project/create`   |
+| ** Structure ** | `/api/v1/project/update`   |
 
 
 ## Path Parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-|           |           |              |                                 |
+| id        | integer   | true         | a project ID to delete          |
 
 
 ## Query Parameters
@@ -36,27 +36,27 @@ To create a new project according to body parameters for a specific user
 | Field Name   | Type     | Required | Default Value   |  Description                                                       |
 | ------------ | -------- | -------- | --------------- | ------------------------------------------------------------------ |
 | name         | string   | true     |                 | a project name                                                     |
-| description  | string   | false    |                 | a project description                                              |
+| description  | string   | false    | `blank`         | a project description                                              |
 | star_at      | datetime | true     |                 | a starting project date in format YYYY-MM-DDThh:mm:dd e.g. 2023-05-30T00:00:01 |
 | is_printed   | boolean  | false    | false           | In order to generate report, set to be `true` to export a report   |
 
 
 ## Sample Request(s) 
 ```
-url = /api/v1/project/create
+url = /api/v1/project/update/1
 ```
 ```json
 {
-  "name": "Europe",
-  "description": "located in central Europe",
-  "is_printed": false,
-  "star_at": "2023-05-30T00:00:01Z"
+    "name": "Europe",
+    "description": "located in central Europe",
+    "is_printed": false,
+    "star_at": "2023-05-30T00:00:01Z"
 }
 ```
 
 ## Sample Response(s)
 ### A success Response
-HTTP status 201 Created
+HTTP status 200 OK
 ```json
 {
   "data": {
@@ -65,7 +65,8 @@ HTTP status 201 Created
     "user_id": 1,
     "description": "located in central Europe",
     "star_at": "2023-05-30T00:00:01Z",
-    "is_printed": false
+    "is_printed": false,
+    "updated_at": "2023-06-01T00:00:00.00+02:00"
   }
 }
 ```
@@ -74,6 +75,14 @@ HTTP status 201 Created
 HTTP status 400 Bad Request
 ```json
 null
+```
+
+### An error response (case: a project ID doesn't belong to user ID in authorization token)
+HTTP status 409 Conflict
+```json
+{
+  "error": "a project ID doesn't belong to a user ID"
+}
 ```
 
 ### An error response (case: unsupported driver)
