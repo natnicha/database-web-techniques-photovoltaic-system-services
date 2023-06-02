@@ -1,19 +1,19 @@
-# [POST] Create a New Product
+# [PUT] Update an Existing Product  
 
-To create a new product according to body parameters for a specific project and user in authorization token
+To update an existing product according to body parameters for a specific user in authorization token
 
 ## URL
 
-| ** Method **    | POST                       | 
-| --------------- | -------------------------- | 
-| ** Structure ** | `/api/v1/product/create`   |
+| ** Method **    | PUT                           | 
+| --------------- | ----------------------------- | 
+| ** Structure ** | `/api/v1/product/update/{id}` |
 
 
 ## Path Parameters
 
 | Key       | Type      | Required     | Description                     |
 | --------- | :-------: | :----------: | ------------------------------- |
-|           |           |              |                                 |
+| id        | integer   | true         | a product ID to update          |
 
 
 ## Query Parameters
@@ -33,20 +33,19 @@ To create a new product according to body parameters for a specific project and 
 
 ## Body Parameters
 
-| Field Name           | Type     | Required | Default Value   |  Description                                                       |
-| -------------------- | -------- | -------- | --------------- | ------------------------------------------------------------------ |
-| project_id           | integer  | true     |                 | a project ID
-| solar_panel_model_id | integer  | true     |                 | a solar panel model ID
+| Field Name           | Type     | Required | Default Value   |  Description                                               |
+| -------------------- | -------- | -------- | --------------- | ---------------------------------------------------------- |
+| project_id           | integer  | true     |                 | a project ID                                               |
+| solar_panel_model_id | integer  | true     |                 | a solar panel model ID                                     |
 | orientation          | string   | true     |                 | orientation of an installed solar panel Either N, E, S, W  |
 | inclination          | numeric  | true     |                 | inclination or tilt of an installed solar panel in degree  |
 | area                 | numeric  | true     |                 | area of an installed solar panel                           |
 | latitude             | numeric  | true     |                 | latitude of location of an installed solar panel           |
 | longitude            | numeric  | true     |                 | longitude of location of an installed solar panel          |
 
-
 ## Sample Request(s) 
 ```
-url = /api/v1/project/create
+url = /api/v1/project/update/1
 ```
 ```json
 {
@@ -62,7 +61,7 @@ url = /api/v1/project/create
 
 ## Sample Response(s)
 ### A success Response
-HTTP status 201 Created
+HTTP status 200 OK
 ```json
 {
   "data": {
@@ -82,6 +81,14 @@ HTTP status 201 Created
 HTTP status 400 Bad Request
 ```json
 null
+```
+
+### An error response (case: a product ID doesn't belong to user ID in authorization token or a project ID)
+HTTP status 409 Conflict
+```json
+{
+  "error": "a product ID doesn't belong to a user ID or a project ID"
+}
 ```
 
 ### An error response (case: unsupported driver)
