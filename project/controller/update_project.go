@@ -46,7 +46,7 @@ func Update(context *gin.Context) {
 	}
 	projectNum := repositories.CheckExistProject(projectId, project)
 	if projectNum == 0 {
-		context.JSON(http.StatusConflict, gin.H{"error": "No project ID with specified user ID"})
+		context.JSON(http.StatusConflict, gin.H{"error": "a project ID doesn't belong to a user ID"})
 		return
 	}
 	updatedProject, err := repositories.UpdateProject(projectId, project)
