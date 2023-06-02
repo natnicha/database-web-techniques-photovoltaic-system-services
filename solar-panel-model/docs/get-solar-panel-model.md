@@ -44,7 +44,7 @@ To get an existing solar panel according to query parameters
 
 ## Sample Request(s) 
 ```
-url = /api/v1/solar-panel-model?limit=1&offset=1&sort_by=id&order_by=asc
+url = /api/v1/solar-panel-model?limit=2&offset=1&sort_by=id&order_by=asc
 ```
 
 ## Sample Response(s)
