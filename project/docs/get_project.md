@@ -44,7 +44,7 @@ To get an existing project according to query parameters for a specific user in 
 
 ## Sample Request(s) 
 ```
-url = /api/v1/project?filter=is_printed:true&limit=1&offset=2&sort_by=id&order_by=asc
+url = /api/v1/project?filter=is_printed:true&limit=2&offset=1&sort_by=id&order_by=asc
 ```
 
 ## Sample Response(s)
