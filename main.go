@@ -9,10 +9,10 @@ import (
 
 	Database "photovoltaic-system-services/db"
 	Middleware "photovoltaic-system-services/middleware"
-	Product "photovoltaic-system-services/product/handler"
-	Project "photovoltaic-system-services/project/handler"
-	SolarPanel "photovoltaic-system-services/solar-panel-model/handler"
-	User "photovoltaic-system-services/user/handler"
+	Product "photovoltaic-system-services/product/handlers"
+	Project "photovoltaic-system-services/project/handlers"
+	SolarPanel "photovoltaic-system-services/solar-panel-model/handlers"
+	User "photovoltaic-system-services/user/handlers"
 )
 
 func main() {

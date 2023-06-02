@@ -1,7 +1,7 @@
-package project
+package handler
 
 import (
-	"photovoltaic-system-services/project/controller"
+	controller "photovoltaic-system-services/product/controllers"
 
 	"github.com/gin-gonic/gin"
 )

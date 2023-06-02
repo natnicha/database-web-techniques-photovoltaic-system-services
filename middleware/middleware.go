@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"net/http"
-	"photovoltaic-system-services/auth/controller"
+	controller "photovoltaic-system-services/auth/controllers"
 	"photovoltaic-system-services/auth/repositories"
 
 	"github.com/gin-gonic/gin"

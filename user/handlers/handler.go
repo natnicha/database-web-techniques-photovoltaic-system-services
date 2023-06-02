@@ -1,20 +1,17 @@
 package handler
 
 import (
-	"photovoltaic-system-services/product/controller"
-
 	"github.com/gin-gonic/gin"
+
+	controller "photovoltaic-system-services/user/controllers"
 )
 
 type Help interface {
-	Create(context *gin.Context)
 	Delete(context *gin.Context)
 	Get(context *gin.Context)
+	Login(context *gin.Context)
+	Register(context *gin.Context)
 	Update(context *gin.Context)
-}
-
-func Create(context *gin.Context) {
-	controller.Create(context)
 }
 
 func Delete(context *gin.Context) {
@@ -23,6 +20,14 @@ func Delete(context *gin.Context) {
 
 func Get(context *gin.Context) {
 	controller.Get(context)
+}
+
+func Login(context *gin.Context) {
+	controller.Login(context)
+}
+
+func Register(context *gin.Context) {
+	controller.Create(context)
 }
 
 func Update(context *gin.Context) {

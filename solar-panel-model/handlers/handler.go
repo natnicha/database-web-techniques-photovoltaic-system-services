@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"photovoltaic-system-services/solar-panel-model/controller"
+	controller "photovoltaic-system-services/solar-panel-model/controllers"
 
 	"github.com/gin-gonic/gin"
 )
