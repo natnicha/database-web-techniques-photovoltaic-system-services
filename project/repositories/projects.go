@@ -37,15 +37,6 @@ func CheckExistProject(projectId int, project Projects) int64 {
 	return count
 }
 
-func UpdateProject(projectId int, project Projects) (*Projects, error) {
-	project.Id = projectId
-	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).UpdateColumn("update_at", "now()").Save(project)
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-	return &project, nil
-}
-
 func DeleteProjectById(id int) (err error) {
 	result := db.Database.Where("id = ?", id).Delete(Projects{})
 	if result.Error != nil {
@@ -81,4 +72,13 @@ func GetProject(query ListRequest) (*[]Projects, error) {
 		return nil, result.Error
 	}
 	return &projects, nil
+}
+
+func UpdateProject(projectId int, project Projects) (*Projects, error) {
+	project.Id = projectId
+	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).UpdateColumn("update_at", "now()").Save(project)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return &project, nil
 }

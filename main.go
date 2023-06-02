@@ -32,23 +32,23 @@ func serveApplication() {
 	apiV1.Use(Middleware.JWTAuthMiddleware())
 	user := apiV1.Group("/user")
 	user.GET("/", User.Get)
-	user.PUT("/update", User.Update)
 	user.DELETE("/delete", User.Delete)
+	user.PUT("/update", User.Update)
 
 	project := apiV1.Group("/project")
-	project.POST("/create", Project.Create)
-	project.PUT("/update/:id", Project.Update)
-	project.DELETE("/delete/:id", Project.Delete)
 	project.GET("/", Project.Get)
+	project.POST("/create", Project.Create)
+	project.DELETE("/delete/:id", Project.Delete)
+	project.PUT("/update/:id", Project.Update)
 
 	solarPanel := apiV1.Group("/solar-panel-model")
 	solarPanel.GET("/", SolarPanel.Get)
 
 	product := apiV1.Group("/product")
-	product.POST("/create", Product.Create)
-	product.PUT("/update/:id", Product.Update)
-	product.DELETE("/delete/:id", Product.Delete)
 	product.GET("/", Product.Get)
+	product.POST("/create", Product.Create)
+	product.DELETE("/delete/:id", Product.Delete)
+	product.PUT("/update/:id", Product.Update)
 
 	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))

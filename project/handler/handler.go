@@ -8,17 +8,13 @@ import (
 
 type Help interface {
 	Create(context *gin.Context)
-	Update(context *gin.Context)
 	Delete(context *gin.Context)
 	Get(context *gin.Context)
+	Update(context *gin.Context)
 }
 
 func Create(context *gin.Context) {
 	controller.Create(context)
-}
-
-func Update(context *gin.Context) {
-	controller.Update(context)
 }
 
 func Delete(context *gin.Context) {
@@ -27,4 +23,8 @@ func Delete(context *gin.Context) {
 
 func Get(context *gin.Context) {
 	controller.Get(context)
+}
+
+func Update(context *gin.Context) {
+	controller.Update(context)
 }

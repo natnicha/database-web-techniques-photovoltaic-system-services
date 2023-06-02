@@ -15,6 +15,22 @@ type Users struct {
 	UpdateAt  time.Time `json:"update_at"`
 }
 
+func CreateUser(user Users) (*Users, error) {
+	result := db.Database.Create(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
+}
+
+func DeleteUserById(id string) (err error) {
+	result := db.Database.Where("id = ?", id).Delete(Users{})
+	if result.Error != nil {
+		return err
+	}
+	return nil
+}
+
 func GetUserById(id int) (user *Users, err error) {
 	result := db.Database.Where("id = ?", id).Find(&user)
 	if result.Error != nil {
@@ -31,14 +47,6 @@ func GetUserByEmail(email string) (user *Users, err error) {
 	return user, nil
 }
 
-func CreateUser(user Users) (*Users, error) {
-	result := db.Database.Create(&user)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return &user, nil
-}
-
 func UpdateUser(id int, user Users) (*Users, error) {
 	user.Id = id
 	tx := db.Database.Model(&user).UpdateColumn("update_at", "now()").Save(user)
@@ -46,12 +54,4 @@ func UpdateUser(id int, user Users) (*Users, error) {
 		return nil, tx.Error
 	}
 	return &user, nil
-}
-
-func DeleteUserById(id string) (err error) {
-	result := db.Database.Where("id = ?", id).Delete(Users{})
-	if result.Error != nil {
-		return err
-	}
-	return nil
 }

@@ -45,15 +45,6 @@ func DeleteProductById(id int) (err error) {
 	return nil
 }
 
-func UpdateProject(productId int, product Product) (*Product, error) {
-	product.Id = productId
-	tx := db.Database.Model(&product).Where("id = ?", productId).UpdateColumn("update_at", "now()").Save(product)
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-	return &product, nil
-}
-
 func GetProduct(query ListRequest) (*[]Product, error) {
 	tx := db.Database.Model(&Product{})
 	if len(query.Filter) > 0 {
@@ -79,6 +70,15 @@ func GetProduct(query ListRequest) (*[]Product, error) {
 	result := tx.Find(&product)
 	if result.Error != nil {
 		return nil, result.Error
+	}
+	return &product, nil
+}
+
+func UpdateProject(productId int, product Product) (*Product, error) {
+	product.Id = productId
+	tx := db.Database.Model(&product).Where("id = ?", productId).UpdateColumn("update_at", "now()").Save(product)
+	if tx.Error != nil {
+		return nil, tx.Error
 	}
 	return &product, nil
 }
