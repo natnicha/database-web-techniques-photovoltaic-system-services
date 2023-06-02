@@ -9,6 +9,7 @@ import (
 
 	Database "photovoltaic-system-services/db"
 	Middleware "photovoltaic-system-services/middleware"
+	Product "photovoltaic-system-services/product/handler"
 	Project "photovoltaic-system-services/project/handler"
 	SolarPanel "photovoltaic-system-services/solar-panel-model/handler"
 	User "photovoltaic-system-services/user/handler"
@@ -42,6 +43,10 @@ func serveApplication() {
 
 	solarPanel := apiV1.Group("/solar-panel-model")
 	solarPanel.GET("/", SolarPanel.Get)
+
+	product := apiV1.Group("/product")
+	product.POST("/create", Product.Create)
+
 	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))
 }

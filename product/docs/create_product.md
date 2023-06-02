@@ -84,6 +84,14 @@ HTTP status 400 Bad Request
 null
 ```
 
+### An error response (case: a product ID doesn't belong to user ID in authorization token)
+HTTP status 409 Conflict
+```json
+{
+  "error": "a product ID doesn't belong to a user ID"
+}
+```
+
 ### An error response (case: unsupported driver)
 HTTP status 500 Internal Server Error
 ```json
