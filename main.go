@@ -13,6 +13,7 @@ import (
 	Project "photovoltaic-system-services/project/handlers"
 	SolarPanel "photovoltaic-system-services/solar-panel-model/handlers"
 	User "photovoltaic-system-services/user/handlers"
+	Weather "photovoltaic-system-services/weather/handlers"
 )
 
 func main() {
@@ -50,6 +51,10 @@ func serveApplication() {
 	product.POST("/create", Product.Create)
 	product.DELETE("/delete/:id", Product.Delete)
 	product.PUT("/update/:id", Product.Update)
+
+	weather := apiV1.Group("/weather")
+	weather.POST("/daily", Weather.Daily)
+	weather.POST("/history", Weather.History)
 
 	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))
