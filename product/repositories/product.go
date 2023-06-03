@@ -40,7 +40,7 @@ func CheckExistProduct(productId int) int64 {
 func DeleteProductById(id int) (err error) {
 	result := db.Database.Where("id = ?", id).Delete(Product{})
 	if result.Error != nil {
-		return err
+		return result.Error
 	}
 	return nil
 }

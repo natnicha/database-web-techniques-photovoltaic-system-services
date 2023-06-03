@@ -40,7 +40,7 @@ func CheckExistProject(projectId int, project Projects) int64 {
 func DeleteProjectById(id int) (err error) {
 	result := db.Database.Where("id = ?", id).Delete(Projects{})
 	if result.Error != nil {
-		return err
+		return result.Error
 	}
 	return nil
 }
