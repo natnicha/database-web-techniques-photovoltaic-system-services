@@ -37,7 +37,7 @@ To update an existing project according to body parameters for a specific user i
 | ------------ | -------- | -------- | --------------- | ------------------------------------------------------------------ |
 | name         | string   | true     |                 | a project name                                                     |
 | description  | string   | false    | `blank`         | a project description                                              |
-| star_at      | datetime | true     |                 | a starting project date in format YYYY-MM-DDThh:mm:dd e.g. 2023-05-30T00:00:01 |
+| start_at     | datetime | true     |                 | a starting project date in format YYYY-MM-DDThh:mm:dd e.g. 2023-05-30T00:00:01 |
 | is_printed   | boolean  | false    | false           | In order to generate report, set to be `true` to export a report   |
 
 
@@ -50,7 +50,7 @@ url = /api/v1/project/update/1
     "name": "Europe",
     "description": "located in central Europe",
     "is_printed": false,
-    "star_at": "2023-05-30T00:00:01Z"
+    "start_at": "2023-05-30T00:00:01Z"
 }
 ```
 
@@ -64,7 +64,7 @@ HTTP status 200 OK
     "name": "Europe",
     "user_id": 1,
     "description": "located in central Europe",
-    "star_at": "2023-05-30T00:00:01Z",
+    "start_at": "2023-05-30T00:00:01Z",
     "is_printed": false,
   }
 }
