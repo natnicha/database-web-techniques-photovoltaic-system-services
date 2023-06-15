@@ -137,7 +137,6 @@ func callOpenWeatherAPI(openWeatherParams openWeatherParams) (openWeatherRespons
 	q.Add("appid", os.Getenv("OPEN_WEATHER_API_KEY"))
 	request.URL.RawQuery = q.Encode()
 
-	fmt.Println(request.URL.String())
 	resp, err := client.Do(request)
 	if err != nil {
 		return openWeatherResponse{}, err

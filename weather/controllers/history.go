@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/mcuadros/go-defaults"
+	"github.com/go-playground/validator/v10"
 )
 
 type requestBody struct {
@@ -18,11 +18,17 @@ type requestBody struct {
 
 func History(context *gin.Context) {
 	reqBody := new(requestBody)
-	defaults.SetDefaults(reqBody)
 	err := context.BindJSON(&reqBody)
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+	err = validateStruct(reqBody)
+	if err != nil {
+		for _, e := range err.(validator.ValidationErrors) {
+			context.JSON(http.StatusBadRequest, gin.H{"error": e.Error()})
+			return
+		}
 	}
 
 	runtime.GOMAXPROCS(2)
@@ -53,4 +59,9 @@ func History(context *gin.Context) {
 		return
 	}()
 	return
+}
+
+func validateStruct(obj interface{}) error {
+	v := validator.New()
+	return v.Struct(obj)
 }
