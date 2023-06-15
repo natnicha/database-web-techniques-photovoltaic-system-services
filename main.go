@@ -24,6 +24,7 @@ func main() {
 
 func serveApplication() {
 	router := gin.Default()
+	router.Use(Middleware.CORSMiddleware())
 	auth := router.Group("/auth")
 	auth.POST("/register", User.Register)
 	auth.POST("/login", User.Login)
