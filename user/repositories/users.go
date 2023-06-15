@@ -46,7 +46,11 @@ func GetUserByEmail(email string) (user *Users, err error) {
 
 func UpdateUser(id int, user Users) (*Users, error) {
 	user.Id = id
-	tx := db.Database.Model(&user).Where("id = ?", id).UpdateColumn("update_at", "now()").Save(user)
+	tx := db.Database.Model(&user).Where("id = ?", id).Save(user)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	tx = db.Database.Model(&user).Where("id = ?", id).UpdateColumn("update_at", "now()")
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

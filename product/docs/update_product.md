@@ -33,15 +33,15 @@ To update an existing product according to body parameters for a specific user i
 
 ## Body Parameters
 
-| Field Name           | Type     | Required | Default Value   |  Description                                               |
-| -------------------- | -------- | -------- | --------------- | ---------------------------------------------------------- |
-| project_id           | integer  | true     |                 | a project ID                                               |
-| solar_panel_model_id | integer  | true     |                 | a solar panel model ID                                     |
-| orientation          | string   | true     |                 | orientation of an installed solar panel Either N, E, S, W  |
-| inclination          | numeric  | true     |                 | inclination or tilt of an installed solar panel in degree  |
-| area                 | numeric  | true     |                 | area of an installed solar panel                           |
-| latitude             | numeric  | true     |                 | latitude of location of an installed solar panel           |
-| longitude            | numeric  | true     |                 | longitude of location of an installed solar panel          |
+| Field Name           | Type     | Required | Default Value   |  Description                                                                       |
+| -------------------- | -------- | -------- | --------------- | ---------------------------------------------------------------------------------- |
+| project_id           | integer  | true     |                 | a project ID                                                                       |
+| solar_panel_model_id | integer  | true     |                 | a solar panel model ID                                                             |
+| orientation          | string   | true     |                 | orientation or azimuth of an installed solar panel, the angle from North in degree |
+| inclination          | numeric  | true     |                 | inclination or tilt of an installed solar panel in degree                          |
+| area                 | numeric  | true     |                 | area of an installed solar panel                                                   |
+| latitude             | numeric  | true     |                 | latitude of location of an installed solar panel                                   |
+| longitude            | numeric  | true     |                 | longitude of location of an installed solar panel                                  |
 
 ## Sample Request(s) 
 ```
@@ -51,7 +51,7 @@ url = /api/v1/project/update/1
 {
   "project_id": 1,
   "solar_panel_model_id": 1,
-  "orientation": "N",
+  "orientation": 10.5,
   "inclination": 5.25,
   "area": 20,
   "latitude": 50.8282,
@@ -68,7 +68,7 @@ HTTP status 200 OK
     "id": 1,
     "project_id": 1,
     "solar_panel_model_id": 1,
-    "orientation": "N",
+    "orientation": 10.5,
     "inclination": 5.25,
     "area": 20,
     "latitude": 50.8282,

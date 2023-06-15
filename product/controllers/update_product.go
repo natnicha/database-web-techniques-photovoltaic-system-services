@@ -48,7 +48,7 @@ func Update(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "No specified product ID"})
 		return
 	}
-	updatedProject, err := repositories.UpdateProject(productId, product)
+	updatedProject, err := repositories.UpdateProduct(productId, product)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

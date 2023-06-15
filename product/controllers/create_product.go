@@ -12,7 +12,7 @@ import (
 type requestBody struct {
 	ProjectId         int     `json:"project_id" validate:"required"`
 	SolarPanelModelId int     `json:"solar_panel_model_id" validate:"required"`
-	Orientation       string  `json:"orientation" validate:"required"`
+	Orientation       float32 `json:"orientation" validate:"required"`
 	Inclination       float32 `json:"inclination" validate:"required"`
 	Area              float32 `json:"area" validate:"required"`
 	Geolocation       string  `json:"geolocation" validate:"required"`

@@ -76,7 +76,11 @@ func GetProject(query ListRequest) (*[]Projects, error) {
 
 func UpdateProject(projectId int, project Projects) (*Projects, error) {
 	project.Id = projectId
-	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).UpdateColumn("update_at", "now()").Save(project)
+	tx := db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).Save(project)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	tx = db.Database.Model(&project).Where("id = ? and user_id = ?", projectId, project.UserId).UpdateColumn("update_at", "now()")
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

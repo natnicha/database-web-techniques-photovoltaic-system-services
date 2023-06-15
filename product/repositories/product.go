@@ -9,7 +9,7 @@ type Product struct {
 	Id                int     `json:"id"`
 	ProjectId         int     `json:"project_id"`
 	SolarPanelModelId int     `json:"solar_panel_model_id"`
-	Orientation       string  `json:"orientation"`
+	Orientation       float32 `json:"orientation"`
 	Inclination       float32 `json:"inclination"`
 	Area              float32 `json:"area"`
 	Geolocation       string  `json:"geolocation"`
@@ -74,9 +74,13 @@ func GetProduct(query ListRequest) (*[]Product, error) {
 	return &product, nil
 }
 
-func UpdateProject(productId int, product Product) (*Product, error) {
+func UpdateProduct(productId int, product Product) (*Product, error) {
 	product.Id = productId
-	tx := db.Database.Model(&product).Where("id = ?", productId).UpdateColumn("update_at", "now()").Save(product)
+	tx := db.Database.Model(&product).Where("id = ?", productId).Save(product)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	tx = db.Database.Model(&product).Where("id = ?", productId).UpdateColumn("update_at", "now()")
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
