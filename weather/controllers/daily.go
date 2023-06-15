@@ -68,6 +68,7 @@ func Daily(context *gin.Context) {
 
 	// parallel making requests for weather
 	go func() {
+		defer wg.Done()
 		yesterday := time.Now().AddDate(0, 0, -1)
 		startDateTime := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 0, 0, 0, 0, time.Local).Unix()
 		endDateTime := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 23, 59, 0, 0, time.Local).Unix()
@@ -190,7 +191,7 @@ func ScrapeWeather(geolocationa []geolocation, startDateTime int64, endDateTime 
 		}
 		for _, weather := range openWeatherResponse.List {
 			repositories.InseartWeather(repositories.Weather{
-				Geolocation:    "(" + val.latitude + "," + val.latitude + ")",
+				Geolocation:    "(" + val.latitude + "," + val.longitude + ")",
 				Datetime:       time.Unix(int64(weather.Dt), 0).Format(time.RFC3339),
 				AirTemperature: weather.Main.Temp,
 				Humidity:       int(weather.Main.Humidity),
