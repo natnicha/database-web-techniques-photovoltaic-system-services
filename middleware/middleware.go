@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"os"
 	controller "photovoltaic-system-services/auth/controllers"
 	"photovoltaic-system-services/auth/repositories"
 
@@ -14,24 +15,28 @@ type Help interface {
 
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		err := controller.ValidateJWT(context)
-		if err != nil {
-			context.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication required"})
-			context.Abort()
-			return
+		if context.GetHeader("API_KEY") == os.Getenv("APP_API_KEY") {
+			context.Set("user-id", 0)
+		} else {
+			err := controller.ValidateJWT(context)
+			if err != nil {
+				context.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication required"})
+				context.Abort()
+				return
+			}
+			user, err := currentUser(context)
+			if err != nil {
+				context.JSON(http.StatusInternalServerError, gin.H{"error": "get user ID failed"})
+				context.Abort()
+				return
+			}
+			if user.Id == 0 {
+				context.JSON(http.StatusInternalServerError, gin.H{"error": "no user account or an user account has been deleted"})
+				context.Abort()
+				return
+			}
+			context.Set("user-id", user.Id)
 		}
-		user, err := currentUser(context)
-		if err != nil {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "get user ID failed"})
-			context.Abort()
-			return
-		}
-		if user.Id == 0 {
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "no user account or an user account has been deleted"})
-			context.Abort()
-			return
-		}
-		context.Set("user-id", user.Id)
 		context.Request.Header.Add("Access-Control-Allow-Origin", "*")
 		context.Request.Header.Add("Access-Control-Allow-Credentials", "true")
 		context.Request.Header.Add("Access-Control-Allow-Methods", "GET, PUT, POST, HEAD, TRACE, DELETE, PATCH, COPY, HEAD, LINK, OPTIONS")
