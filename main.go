@@ -31,6 +31,7 @@ func serveApplication() {
 	auth.POST("/login", User.Login)
 
 	weather := router.Group("/weather")
+	weather.Use(Middleware.JWTAuthMiddleware())
 	weather.POST("/daily", Weather.Daily)
 	weather.POST("/history", Weather.History)
 
