@@ -23,7 +23,7 @@ func CreateUser(user Users) (*Users, error) {
 func DeleteUserById(id string) (err error) {
 	result := db.Database.Where("id = ?", id).Delete(Users{})
 	if result.Error != nil {
-		return err
+		return result.Error
 	}
 	return nil
 }

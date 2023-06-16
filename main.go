@@ -13,6 +13,7 @@ import (
 	Project "photovoltaic-system-services/project/handlers"
 	SolarPanel "photovoltaic-system-services/solar-panel-model/handlers"
 	User "photovoltaic-system-services/user/handlers"
+	Weather "photovoltaic-system-services/weather/handlers"
 )
 
 func main() {
@@ -28,6 +29,11 @@ func serveApplication() {
 	auth := router.Group("/auth")
 	auth.POST("/register", User.Register)
 	auth.POST("/login", User.Login)
+
+	weather := router.Group("/weather")
+	weather.Use(Middleware.JWTAuthMiddleware())
+	weather.POST("/daily", Weather.Daily)
+	weather.POST("/history", Weather.History)
 
 	apiV1 := router.Group("/api/v1")
 	apiV1.Use(Middleware.JWTAuthMiddleware())

@@ -60,8 +60,7 @@ HTTP status 200 OK
       "orientation": 10.5,
       "inclination": 5.25,
       "area": 20,
-      "latitude": 50.8282,
-      "longitude": 12.9209,
+      "geolocation": "(50.8282, 12.9209)",
     },    
     {
       "id": 2,
@@ -70,8 +69,7 @@ HTTP status 200 OK
       "orientation": 10.5,
       "inclination": 7.11,
       "area": 45.7,
-      "latitude": 40.7128,
-      "longitude": 74.0060,
+      "geolocation": "(40.7128, 74.0060)",
     }
   ]
 }

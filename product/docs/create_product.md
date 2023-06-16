@@ -40,8 +40,7 @@ To create a new product according to body parameters for a specific project and 
 | orientation          | string   | true     |                 | orientation or azimuth of an installed solar panel, the angle from North in degree |
 | inclination          | numeric  | true     |                 | inclination or tilt of an installed solar panel in degree                          |
 | area                 | numeric  | true     |                 | area of an installed solar panel                                                   |
-| latitude             | numeric  | true     |                 | latitude of location of an installed solar panel                                   |
-| longitude            | numeric  | true     |                 | longitude of location of an installed solar panel                                  |
+| geolocation          | string   | true     |                 | latitude and longitude of location of an installed solar panel in (`latitude`,`longtitude`) format |
 
 
 ## Sample Request(s) 
@@ -55,8 +54,7 @@ url = /api/v1/project/create
   "orientation": 10.5,
   "inclination": 5.25,
   "area": 20,
-  "latitude": 50.8282,
-  "longitude": 12.9209,
+  "geolocation": "(50.8282, 12.9209)",
 }
 ```
 
@@ -72,8 +70,7 @@ HTTP status 201 Created
     "orientation": 10.5,
     "inclination": 5.25,
     "area": 20,
-    "latitude": 50.8282,
-    "longitude": 12.9209,
+    "geolocation": "(50.8282, 12.9209)",
   }
 }
 ```
