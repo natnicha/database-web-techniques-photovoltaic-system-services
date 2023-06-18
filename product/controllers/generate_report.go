@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"os"
 	"os/exec"
 	"photovoltaic-system-services/product/repositories"
 	"strconv"
@@ -28,11 +29,12 @@ func GenerateReport(context *gin.Context) {
 		return
 	}
 
-	report, err := callReportGenerationBatch(productId)
+	report, err := callReportGenerationBatch(context.Param("id"))
 	if err != nil {
 		context.JSON(http.StatusConflict, gin.H{"error": "generating a report failed"})
 		return
 	}
+	// TODO: set report MetaData (filename: solar_model_geolocation, get user's email)
 	err = sendEmail(report)
 	if err != nil {
 		context.JSON(http.StatusConflict, gin.H{"error": "sending an email failed"})
@@ -42,8 +44,10 @@ func GenerateReport(context *gin.Context) {
 	return
 }
 
-func callReportGenerationBatch(productId int) ([]byte, error) {
-	return exec.Command("/usr/local/opt/bin/python3.7", "/users/test.py", "-i", "12.13.14.15", "--cmd", "uptime && date").Output()
+func callReportGenerationBatch(productId string) ([]byte, error) {
+	pythonPath := os.Getenv("PYTHON_PATH")
+	generateReportExec := os.Getenv("PYTHON_GENERATE_REPORT_EXEC")
+	return exec.Command(pythonPath, generateReportExec, "-i", "12.13.14.15", "--cmd", productId).Output()
 }
 
 func sendEmail(report []byte) error {
