@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 	"runtime"
 	"sync"
@@ -53,6 +54,7 @@ func History(context *gin.Context) {
 			startDateTime.Unix(),
 			endDateTime.Unix())
 		if err != nil {
+			log.Println(err.Error())
 			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}

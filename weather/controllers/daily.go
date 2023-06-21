@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"photovoltaic-system-services/weather/repositories"
@@ -74,6 +75,7 @@ func Daily(context *gin.Context) {
 		endDateTime := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 23, 59, 0, 0, time.Local).Unix()
 		products, err := getAllProducts()
 		if err != nil {
+			log.Println(err.Error())
 			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -81,6 +83,7 @@ func Daily(context *gin.Context) {
 		uniqueGeolocation := getUniqueGeolocation(products.Data)
 		err = ScrapeWeather(uniqueGeolocation, startDateTime, endDateTime)
 		if err != nil {
+			log.Println(err.Error())
 			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
