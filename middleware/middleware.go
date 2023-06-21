@@ -36,6 +36,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 				return
 			}
 			context.Set("user-id", user.Id)
+			context.Set("authorization", context.GetHeader("Authorization"))
 		}
 		context.Request.Header.Add("Access-Control-Allow-Origin", "*")
 		context.Request.Header.Add("Access-Control-Allow-Credentials", "true")
