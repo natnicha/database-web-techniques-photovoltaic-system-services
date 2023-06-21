@@ -52,7 +52,7 @@ func GenerateReport(context *gin.Context) {
 	err = callReportGenerationBatch(context.Param("id"))
 	if err != nil {
 		log.Println(err.Error())
-		context.JSON(http.StatusConflict, gin.H{"error": "generating a report failed: " + err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "generating a report failed: " + err.Error()})
 		return
 	}
 	// TODO: set report MetaData (filename: solar_model_geolocation, get user's email)
@@ -60,13 +60,13 @@ func GenerateReport(context *gin.Context) {
 	responseUser, err := getUserInfo(authorization.(string))
 	if err != nil {
 		log.Println(err.Error())
-		context.JSON(http.StatusConflict, gin.H{"error": "get user information failed" + err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "get user information failed" + err.Error()})
 		return
 	}
 	err = sendEmail(responseUser)
 	if err != nil {
 		log.Println(err.Error())
-		context.JSON(http.StatusConflict, gin.H{"error": "sending an email failed" + err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "sending an email failed" + err.Error()})
 		return
 	}
 	context.JSON(http.StatusAccepted, nil)
@@ -148,6 +148,6 @@ func find(root, ext string) []string {
 func deleteFile(filename string) {
 	e := os.Remove(filename)
 	if e != nil {
-		log.Fatal(e)
+		log.Println(e)
 	}
 }
