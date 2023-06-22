@@ -47,6 +47,7 @@ func serveApplication() {
 	project.POST("/create", Project.Create)
 	project.DELETE("/delete/:id", Project.Delete)
 	project.PUT("/update/:id", Project.Update)
+	project.POST("/generate-report/:id", Project.GenerateReport)
 
 	solarPanel := apiV1.Group("/solar-panel-model")
 	solarPanel.GET("/", SolarPanel.Get)
