@@ -1,6 +1,6 @@
 # [POST] Generate a Photovoltaic System Report within a Project
 
-To generate photovoltaic reports according to the project ID for a specific user in authorization token and send out an email once finished generating all reports within the project
+To generate photovoltaic reports by calling to /product/generate-report/{id} according to the project ID for a specific user in authorization token and send out an email once finished generating all reports within the project
 
 ## URL
 
