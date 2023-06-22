@@ -64,6 +64,8 @@ func GenerateReport(context *gin.Context) {
 
 	// immediatly return 202 Accepted response
 	go func() {
+		wg.Add(1)
+		defer wg.Done()
 		context.JSON(http.StatusAccepted, nil)
 		return
 	}()
@@ -71,9 +73,9 @@ func GenerateReport(context *gin.Context) {
 	// parallel making requests to /product/generate-report
 	go func() {
 		// check is_print
-		// check data
-		// if previous 30 days data is missing, call history
+		// check data, if previous 30 days data is missing, call history
 		authorization, _ := context.Get("authorization")
+		wg.Wait()
 		products, err := requestProducts(authorization.(string), context.Param("id"))
 		if err != nil {
 			log.Println(err.Error())
@@ -109,7 +111,6 @@ func GenerateReport(context *gin.Context) {
 			return
 		}
 		// update is_print flag in db
-		// update generated energy
 		return
 	}()
 }
