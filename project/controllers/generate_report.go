@@ -14,6 +14,7 @@ import (
 	"photovoltaic-system-services/project/repositories"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jordan-wright/email"
@@ -59,38 +60,58 @@ func GenerateReport(context *gin.Context) {
 		return
 	}
 
-	authorization, _ := context.Get("authorization")
-	products, err := requestProducts(authorization.(string), context.Param("id"))
-	if err != nil {
-		log.Println(err.Error())
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "get product information failed" + err.Error()})
-		return
-	}
+	var wg sync.WaitGroup
 
-	for _, product := range products.Data {
-		err = requestProductReportGeneration(authorization.(string), product.Id)
+	// immediatly return 202 Accepted response
+	go func() {
+		context.JSON(http.StatusAccepted, nil)
+		return
+	}()
+
+	// parallel making requests to /product/generate-report
+	go func() {
+		// check is_print
+		// check data
+		// if previous 30 days data is missing, call history
+		authorization, _ := context.Get("authorization")
+		products, err := requestProducts(authorization.(string), context.Param("id"))
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "generating a report failed: " + err.Error()})
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "get product information failed" + err.Error()})
 			return
 		}
-	}
 
-	responseUser, err := getUserInfo(authorization.(string))
-	if err != nil {
-		log.Println(err.Error())
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "get user information failed" + err.Error()})
+		for _, product := range products.Data {
+			wg.Add(1)
+			go func(p ResponseGetProductData) {
+				defer wg.Done()
+
+				err = requestProductReportGeneration(authorization.(string), p.Id)
+				if err != nil {
+					log.Println(err.Error())
+					context.JSON(http.StatusInternalServerError, gin.H{"error": "generating a report failed: " + err.Error()})
+					return
+				}
+			}(product)
+		}
+		wg.Wait()
+
+		responseUser, err := getUserInfo(authorization.(string))
+		if err != nil {
+			log.Println(err.Error())
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "get user information failed" + err.Error()})
+			return
+		}
+		err = sendEmail(responseUser)
+		if err != nil {
+			log.Println(err.Error())
+			context.JSON(http.StatusInternalServerError, gin.H{"error": "sending an email failed" + err.Error()})
+			return
+		}
+		// update is_print flag in db
+		// update generated energy
 		return
-	}
-	err = sendEmail(responseUser)
-	if err != nil {
-		log.Println(err.Error())
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "sending an email failed" + err.Error()})
-		return
-	}
-	// update is_print flag in db
-	// update generated energy
-	return
+	}()
 }
 
 func requestProducts(authorization string, productId string) (ResponseGetProduct, error) {
