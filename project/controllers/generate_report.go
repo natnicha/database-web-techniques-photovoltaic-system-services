@@ -60,6 +60,17 @@ func GenerateReport(context *gin.Context) {
 		return
 	}
 
+	project, err := repositories.GetProject(repositories.ListRequest{Filter: "id:" + context.Param("id")})
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "get project information failed" + err.Error()})
+		return
+	}
+
+	var projectObj = (*project)
+	if projectObj[0].IsPrinted {
+		context.JSON(http.StatusConflict, gin.H{"error": "the project was already printed"})
+		return
+	}
 	var wg sync.WaitGroup
 
 	// immediatly return 202 Accepted response
@@ -72,7 +83,6 @@ func GenerateReport(context *gin.Context) {
 
 	// parallel making requests to /product/generate-report
 	go func() {
-		// check is_print
 		// check data, if previous 30 days data is missing, call history
 		authorization, _ := context.Get("authorization")
 		wg.Wait()
@@ -110,7 +120,8 @@ func GenerateReport(context *gin.Context) {
 			context.JSON(http.StatusInternalServerError, gin.H{"error": "sending an email failed" + err.Error()})
 			return
 		}
-		// update is_print flag in db
+		projectObj[0].IsPrinted = true
+		repositories.UpdateProject(projectId, projectObj[0])
 		return
 	}()
 }
