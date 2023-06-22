@@ -11,7 +11,6 @@ import (
 	"photovoltaic-system-services/weather/repositories"
 	"regexp"
 	"runtime"
-	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -57,19 +56,14 @@ type main struct {
 func Daily(context *gin.Context) {
 	runtime.GOMAXPROCS(2)
 
-	var wg sync.WaitGroup
-	wg.Add(2)
-
 	// immediatly return 202 Accepted response
 	go func() {
-		defer wg.Done()
 		context.JSON(http.StatusAccepted, nil)
 		return
 	}()
 
 	// parallel making requests for weather
 	go func() {
-		defer wg.Done()
 		yesterday := time.Now().AddDate(0, 0, -1)
 		startDateTime := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 0, 0, 0, 0, time.Local).Unix()
 		endDateTime := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 23, 59, 0, 0, time.Local).Unix()

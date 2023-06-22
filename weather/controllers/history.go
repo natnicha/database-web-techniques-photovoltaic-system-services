@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"runtime"
-	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -33,20 +32,15 @@ func History(context *gin.Context) {
 	}
 
 	runtime.GOMAXPROCS(2)
-	var wg sync.WaitGroup
-	wg.Add(2)
 
 	// immediatly return 202 Accepted response
 	go func() {
-		defer wg.Done()
 		context.JSON(http.StatusAccepted, nil)
 		return
 	}()
 
 	// parallel making requests for weather
 	go func() {
-		defer wg.Done()
-
 		startDateTime, err := time.Parse("2006-01-02 15:04:05+01", reqBody.StartAt)
 		endDateTime, err := time.Parse("2006-01-02 15:04:05+01", reqBody.EndAt)
 		err = ScrapeWeather(
