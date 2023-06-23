@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -83,13 +84,12 @@ func GenerateReport(context *gin.Context) {
 
 	// parallel making requests to /product/generate-report
 	go func() {
-		// check data, if previous 30 days data is missing, call history
 		authorization, _ := context.Get("authorization")
 		wg.Wait()
+
 		products, err := requestProducts(authorization.(string), context.Param("id"))
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "get product information failed" + err.Error()})
 			return
 		}
 
@@ -98,10 +98,18 @@ func GenerateReport(context *gin.Context) {
 			go func(p ResponseGetProductData) {
 				defer wg.Done()
 
+				weatherInfo := repositories.GetWeatherInfo(p.Id)
+				if weatherInfo.Count < (24 * 30) {
+					err = requestHistory(authorization.(string), weatherInfo)
+					if err != nil {
+						log.Println(err.Error())
+						return
+					}
+				}
+
 				err = requestProductReportGeneration(authorization.(string), p.Id)
 				if err != nil {
 					log.Println(err.Error())
-					context.JSON(http.StatusInternalServerError, gin.H{"error": "generating a report failed: " + err.Error()})
 					return
 				}
 			}(product)
@@ -111,19 +119,43 @@ func GenerateReport(context *gin.Context) {
 		responseUser, err := getUserInfo(authorization.(string))
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "get user information failed" + err.Error()})
 			return
 		}
 		err = sendEmail(responseUser)
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": "sending an email failed" + err.Error()})
 			return
 		}
 		projectObj[0].IsPrinted = true
 		repositories.UpdateProject(projectId, projectObj[0])
 		return
 	}()
+}
+
+func requestHistory(authorization string, weatherInfo repositories.WeatherInfo) error {
+	client := &http.Client{}
+	url := "http://localhost:" + os.Getenv("SERVICE_PORT") + "/weather/history"
+	body := []byte(
+		`{
+		"geolocation": "(` + weatherInfo.Latitude + `,` + weatherInfo.Longtitude + `)",
+		"start_at": "` + fmt.Sprint(weatherInfo.StartWeather.Format("2006-01-02 15:04:05-07")) + `",
+		"end_at": "` + fmt.Sprint(weatherInfo.EndWeather.Format("2006-01-02 15:04:05-07")) + `"
+	}`)
+	request, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	if err != nil {
+		return err
+	}
+
+	request.Header.Set("Authorization", authorization)
+	resp, err := client.Do(request)
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return errors.New("Internal request failed")
+	}
+	return nil
 }
 
 func requestProducts(authorization string, productId string) (ResponseGetProduct, error) {
