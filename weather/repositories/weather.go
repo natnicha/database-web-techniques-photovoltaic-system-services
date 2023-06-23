@@ -3,7 +3,8 @@ package repositories
 import "photovoltaic-system-services/db"
 
 type Weather struct {
-	Geolocation    string  `json:"geolocation"`
+	Latitude       string  `json:"latitude"`
+	Longitude      string  `json:"longitude"`
 	Datetime       string  `json:"datetime"`
 	AirTemperature float32 `json:"air_temperature"`
 	Humidity       int     `json:"humidity"`

@@ -24,10 +24,12 @@ type geolocation struct {
 	latitude  string
 	longitude string
 }
+
 type openWeatherParams struct {
-	geolocation geolocation
-	start       int64
-	end         int64
+	latitude  string
+	longitude string
+	start     int64
+	end       int64
 }
 
 type openWeatherResponse struct {
@@ -70,7 +72,7 @@ func Daily(context *gin.Context) {
 		products, err := getAllProducts()
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			// context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -78,7 +80,7 @@ func Daily(context *gin.Context) {
 		err = ScrapeWeather(uniqueGeolocation, startDateTime, endDateTime)
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			// context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		return
@@ -125,8 +127,8 @@ func callOpenWeatherAPI(openWeatherParams openWeatherParams) (openWeatherRespons
 		return openWeatherResponse{}, err
 	}
 	q := request.URL.Query()
-	q.Add("lat", openWeatherParams.geolocation.latitude)
-	q.Add("lon", openWeatherParams.geolocation.longitude)
+	q.Add("lat", openWeatherParams.latitude)
+	q.Add("lon", openWeatherParams.longitude)
 	q.Add("start", fmt.Sprint(openWeatherParams.start))
 	q.Add("end", fmt.Sprint(openWeatherParams.end))
 	q.Add("type", os.Getenv("OPEN_WEATHER_DURATION"))
@@ -177,7 +179,8 @@ func ScrapeWeather(geolocationa []geolocation, startDateTime int64, endDateTime 
 	for _, val := range geolocationa {
 		openWeatherResponse, err := callOpenWeatherAPI(
 			openWeatherParams{
-				val,
+				val.latitude,
+				val.longitude,
 				startDateTime,
 				endDateTime,
 			},
@@ -187,7 +190,8 @@ func ScrapeWeather(geolocationa []geolocation, startDateTime int64, endDateTime 
 		}
 		for _, weather := range openWeatherResponse.List {
 			repositories.InseartWeather(repositories.Weather{
-				Geolocation:    "(" + val.latitude + "," + val.longitude + ")",
+				Latitude:       val.latitude,
+				Longitude:      val.longitude,
 				Datetime:       time.Unix(int64(weather.Dt), 0).Format(time.RFC3339),
 				AirTemperature: weather.Main.Temp,
 				Humidity:       int(weather.Main.Humidity),
