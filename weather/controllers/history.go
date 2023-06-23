@@ -30,37 +30,28 @@ func History(context *gin.Context) {
 		}
 	}
 
-	// immediatly return 202 Accepted response
-	go func() {
-		context.JSON(http.StatusAccepted, nil)
-		return
-	}()
-
-	// parallel making requests for weather
-	go func() {
-		startDateTime, err := time.Parse("2006-01-02 15:04:05-07", reqBody.StartAt)
-		endDateTime, err := time.Parse("2006-01-02 15:04:05-07", reqBody.EndAt)
-		startIntervalDateTime := startDateTime
-		endIntervalDateTime := startDateTime
-		for endIntervalDateTime.Before(endDateTime) {
-			if endIntervalDateTime.Add(7 * 24 * time.Hour).After(endDateTime) {
-				endIntervalDateTime = endDateTime
-			} else {
-				endIntervalDateTime = endIntervalDateTime.Add(7 * 24 * time.Hour)
-			}
-			err = ScrapeWeather(
-				[]geolocation{extractLatLong(reqBody.Geolocation)},
-				startIntervalDateTime.Unix(),
-				endIntervalDateTime.Unix())
-			if err != nil {
-				log.Println(err.Error())
-				context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-				return
-			}
-			startIntervalDateTime = endIntervalDateTime
+	startDateTime, err := time.Parse("2006-01-02 15:04:05-07", reqBody.StartAt)
+	endDateTime, err := time.Parse("2006-01-02 15:04:05-07", reqBody.EndAt)
+	startIntervalDateTime := startDateTime
+	endIntervalDateTime := startDateTime
+	for endIntervalDateTime.Before(endDateTime) {
+		if endIntervalDateTime.Add(7 * 24 * time.Hour).After(endDateTime) {
+			endIntervalDateTime = endDateTime
+		} else {
+			endIntervalDateTime = endIntervalDateTime.Add(7 * 24 * time.Hour)
 		}
-		return
-	}()
+		err = ScrapeWeather(
+			[]geolocation{extractLatLong(reqBody.Geolocation)},
+			startIntervalDateTime.Unix(),
+			endIntervalDateTime.Unix())
+		if err != nil {
+			log.Println(err.Error())
+			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		startIntervalDateTime = endIntervalDateTime
+	}
+	context.JSON(http.StatusOK, nil)
 	return
 }
 
