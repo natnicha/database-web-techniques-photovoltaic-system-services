@@ -72,7 +72,6 @@ func Daily(context *gin.Context) {
 		products, err := getAllProducts()
 		if err != nil {
 			log.Println(err.Error())
-			// context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -80,7 +79,6 @@ func Daily(context *gin.Context) {
 		err = ScrapeWeather(uniqueGeolocation, startDateTime, endDateTime)
 		if err != nil {
 			log.Println(err.Error())
-			// context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		return
