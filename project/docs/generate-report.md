@@ -50,13 +50,22 @@ HTTP status 202 Accepted
 null
 ```
 
-### An error response (case: a project ID doesn't belong to user ID in authorization token)
+### An error response (case: a project ID doesn't exist of doesn't belong to a user ID in authorization token)
 HTTP status 409 Conflict
 ```json
 {
-  "error": "a product ID doesn't belong to a user ID"
+  "error": "a project ID doesn't exist of doesn't belong to a user ID"
 }
 ```
+
+### An error response (case: the project was already printed)
+HTTP status 409 Conflict
+```json
+{
+  "error": "the project was already printed"
+}
+```
+
 
 ### An error response (case: unsupported driver)
 HTTP status 500 Internal Server Error

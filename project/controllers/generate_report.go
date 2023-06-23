@@ -57,7 +57,7 @@ func GenerateReport(context *gin.Context) {
 	userId, _ := context.Get("user-id")
 	projectNum := repositories.CheckExistProject(projectId, repositories.Projects{UserId: userId.(int)})
 	if projectNum == 0 {
-		context.JSON(http.StatusConflict, gin.H{"error": "a project ID doesn't belong to a user ID"})
+		context.JSON(http.StatusConflict, gin.H{"error": "a project ID doesn't exist of doesn't belong to a user ID"})
 		return
 	}
 
