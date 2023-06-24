@@ -54,8 +54,13 @@ func GenerateReport(context *gin.Context) {
 		return
 	}
 
-	userId, _ := context.Get("user-id")
-	projectNum := repositories.CheckExistProject(projectId, repositories.Projects{UserId: userId.(int)})
+	userIdObj, _ := context.Get("user-id")
+	userId := fmt.Sprint(userIdObj.(int))
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	projectNum := repositories.CheckExistProject(projectId, repositories.Projects{UserId: userIdObj.(int)})
 	if projectNum == 0 {
 		context.JSON(http.StatusConflict, gin.H{"error": "a project ID doesn't exist of doesn't belong to a user ID"})
 		return
@@ -84,10 +89,9 @@ func GenerateReport(context *gin.Context) {
 
 	// parallel making requests to /product/generate-report
 	go func() {
-		authorization, _ := context.Get("authorization")
 		wg.Wait()
 
-		products, err := requestProducts(authorization.(string), context.Param("id"))
+		products, err := requestProducts(userId, context.Param("id"))
 		if err != nil {
 			log.Println(err.Error())
 			return
@@ -100,14 +104,14 @@ func GenerateReport(context *gin.Context) {
 
 				weatherInfo := repositories.GetWeatherInfo(p.Id)
 				if weatherInfo.Count < (24 * 30) {
-					err = requestHistory(authorization.(string), weatherInfo)
+					err = requestHistory(userId, weatherInfo)
 					if err != nil {
 						log.Println(err.Error())
 						return
 					}
 				}
 
-				err = requestProductReportGeneration(authorization.(string), p.Id)
+				err = requestProductReportGeneration(userId, p.Id)
 				if err != nil {
 					log.Println(err.Error())
 					return
@@ -116,7 +120,7 @@ func GenerateReport(context *gin.Context) {
 		}
 		wg.Wait()
 
-		responseUser, err := getUserInfo(authorization.(string))
+		responseUser, err := getUserInfo(userId)
 		if err != nil {
 			log.Println(err.Error())
 			return
@@ -132,7 +136,7 @@ func GenerateReport(context *gin.Context) {
 	}()
 }
 
-func requestHistory(authorization string, weatherInfo repositories.WeatherInfo) error {
+func requestHistory(userId string, weatherInfo repositories.WeatherInfo) error {
 	client := &http.Client{}
 	url := "http://localhost:" + os.Getenv("SERVICE_PORT") + "/weather/history"
 	body := []byte(
@@ -146,7 +150,11 @@ func requestHistory(authorization string, weatherInfo repositories.WeatherInfo) 
 		return err
 	}
 
-	request.Header.Set("Authorization", authorization)
+	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+
+	q := request.URL.Query()
+	q.Add("user-id", userId)
+	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return err
@@ -158,18 +166,20 @@ func requestHistory(authorization string, weatherInfo repositories.WeatherInfo) 
 	return nil
 }
 
-func requestProducts(authorization string, productId string) (ResponseGetProduct, error) {
+func requestProducts(userId string, productId string) (ResponseGetProduct, error) {
 	client := &http.Client{}
 	url := "http://localhost:" + os.Getenv("SERVICE_PORT") + "/api/v1/product/"
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return ResponseGetProduct{}, err
 	}
+
+	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+
 	q := request.URL.Query()
 	q.Add("filter", "project_id:"+productId)
+	q.Add("user-id", userId)
 	request.URL.RawQuery = q.Encode()
-
-	request.Header.Set("Authorization", authorization)
 	resp, err := client.Do(request)
 	if err != nil {
 		return ResponseGetProduct{}, err
@@ -190,7 +200,7 @@ func requestProducts(authorization string, productId string) (ResponseGetProduct
 	return result, nil
 }
 
-func requestProductReportGeneration(authorization string, productId int) error {
+func requestProductReportGeneration(userId string, productId int) error {
 	client := &http.Client{}
 	url := "http://localhost:" + os.Getenv("SERVICE_PORT") + "/api/v1/product/generate-report/" + fmt.Sprint(productId)
 	request, err := http.NewRequest("POST", url, nil)
@@ -198,7 +208,11 @@ func requestProductReportGeneration(authorization string, productId int) error {
 		return err
 	}
 
-	request.Header.Set("Authorization", authorization)
+	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+
+	q := request.URL.Query()
+	q.Add("user-id", userId)
+	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return err
@@ -210,7 +224,7 @@ func requestProductReportGeneration(authorization string, productId int) error {
 	return nil
 }
 
-func getUserInfo(authorization string) (ResponseUser, error) {
+func getUserInfo(userId string) (ResponseUser, error) {
 	client := &http.Client{}
 	url := "http://localhost:" + os.Getenv("SERVICE_PORT") + "/api/v1/user/"
 	request, err := http.NewRequest("GET", url, nil)
@@ -218,7 +232,11 @@ func getUserInfo(authorization string) (ResponseUser, error) {
 		return ResponseUser{}, err
 	}
 
-	request.Header.Set("Authorization", authorization)
+	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+
+	q := request.URL.Query()
+	q.Add("user-id", userId)
+	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return ResponseUser{}, err
