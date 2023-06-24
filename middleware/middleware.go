@@ -1,10 +1,12 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"os"
 	controller "photovoltaic-system-services/auth/controllers"
 	"photovoltaic-system-services/auth/repositories"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +18,11 @@ type Help interface {
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		if context.GetHeader("API_KEY") == os.Getenv("APP_API_KEY") {
-			context.Set("user-id", 0)
+			userId, err := strconv.Atoi(context.Query("user-id"))
+			if err != nil {
+				log.Println(err.Error())
+			}
+			context.Set("user-id", userId)
 		} else {
 			err := controller.ValidateJWT(context)
 			if err != nil {
