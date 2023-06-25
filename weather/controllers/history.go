@@ -10,9 +10,10 @@ import (
 )
 
 type requestBody struct {
-	Geolocation string `json:"geolocation" validate:"required"`
-	StartAt     string `json:"start_at" validate:"required"`
-	EndAt       string `json:"end_at" validate:"required"`
+	Latitude  string `json:"latitude" validate:"required"`
+	Longitude string `json:"longitude" validate:"required"`
+	StartAt   string `json:"start_at" validate:"required"`
+	EndAt     string `json:"end_at" validate:"required"`
 }
 
 func History(context *gin.Context) {
@@ -41,7 +42,7 @@ func History(context *gin.Context) {
 			endIntervalDateTime = endIntervalDateTime.Add(7 * 24 * time.Hour)
 		}
 		err = ScrapeWeather(
-			[]geolocation{extractLatLong(reqBody.Geolocation)},
+			[]geolocation{{latitude: reqBody.Latitude, longitude: reqBody.Longitude}},
 			startIntervalDateTime.Unix(),
 			endIntervalDateTime.Unix())
 		if err != nil {

@@ -10,7 +10,7 @@ type Weather struct {
 	Humidity       int     `json:"humidity"`
 }
 
-func InseartWeather(weather Weather) (*Weather, error) {
+func InsertWeather(weather Weather) (*Weather, error) {
 	result := db.Database.Table("weather").Create(&weather)
 	if result.Error != nil {
 		return nil, result.Error

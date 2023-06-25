@@ -138,10 +138,11 @@ func GenerateReport(context *gin.Context) {
 
 func requestHistory(userId string, weatherInfo repositories.WeatherInfo) error {
 	client := &http.Client{}
-	url := "http://localhost:" + os.Getenv("SERVICE_PORT") + "/weather/history"
+	url := "http://localhost:" + os.Getenv("SERVICE_PORT") + "/api/v1/weather/history"
 	body := []byte(
 		`{
-		"geolocation": "(` + weatherInfo.Latitude + `,` + weatherInfo.Longtitude + `)",
+		"latitude": "` + weatherInfo.Latitude + `",
+		"longitude": "` + weatherInfo.Longitude + `",
 		"start_at": "` + fmt.Sprint(weatherInfo.StartWeather.Format("2006-01-02 15:04:05-07")) + `",
 		"end_at": "` + fmt.Sprint(weatherInfo.EndWeather.Format("2006-01-02 15:04:05-07")) + `"
 	}`)
@@ -173,7 +174,11 @@ func requestProducts(userId string, productId string) (ResponseGetProduct, error
 	}
 
 	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
-	request.Header.Set("user-id", userId)
+
+	q := request.URL.Query()
+	q.Add("filter", "project_id:"+productId)
+	q.Add("user-id", userId)
+	request.URL.RawQuery = q.Encode()
 
 	resp, err := client.Do(request)
 	if err != nil {
@@ -228,6 +233,9 @@ func getUserInfo(userId string) (ResponseUser, error) {
 	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
 	request.Header.Set("user-id", userId)
 
+	q := request.URL.Query()
+	q.Add("user-id", userId)
+	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return ResponseUser{}, err

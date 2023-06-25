@@ -35,7 +35,8 @@ To gather historical weather for a specific location according request body para
 
 | Field Name      | Type     | Required | Default Value   |  Description                                                                                           |
 | --------------- | -------- | -------- | --------------- | ------------------------------------------------------------------------------------------------------ |
-| geolocation     | string   | true     |                 | latitude and longitude of location of an installed solar panel in (`latitude`,`longtitude`) format     |
+| latitude        | string   | true     |                 | latitude of location of an installed solar panel                                                       |
+| longitude       | string   | true     |                 | longitude of location of an installed solar panel                                                      |
 | start_at        | datetime | true     |                 | a starting expected date for historical weather in YYYY-MM-DDThh:mm:dd format e.g. 2023-05-30T00:00:01 |
 | end_at          | datetime | true     |                 | a ending expected date for historical weather in YYYY-MM-DDThh:mm:dd format e.g. 2023-06-30T00:00:01   |
 

@@ -11,7 +11,7 @@ type WeatherInfo struct {
 	StartWeather time.Time `json:"start_weather"`
 	EndWeather   time.Time `json:"end_weather"`
 	Latitude     string    `json:"latitude"`
-	Longtitude   string    `json:"longtitude"`
+	Longitude    string    `json:"longtitude"`
 }
 
 func GetWeatherInfo(projectId int) WeatherInfo {
@@ -47,6 +47,6 @@ func GetWeatherInfo(projectId int) WeatherInfo {
 	`
 	var result WeatherInfo
 	row := db.Database.Raw(query).Row()
-	row.Scan(&result.Count, &result.StartWeather, &result.EndWeather, &result.Latitude, &result.Longtitude)
+	row.Scan(&result.Count, &result.StartWeather, &result.EndWeather, &result.Latitude, &result.Longitude)
 	return result
 }

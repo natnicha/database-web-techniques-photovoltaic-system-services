@@ -173,8 +173,8 @@ func getUniqueGeolocation(products []repositories.Product) []geolocation {
 	return uniqueGeolocation
 }
 
-func ScrapeWeather(geolocationa []geolocation, startDateTime int64, endDateTime int64) error {
-	for _, val := range geolocationa {
+func ScrapeWeather(geolocation []geolocation, startDateTime int64, endDateTime int64) error {
+	for _, val := range geolocation {
 		openWeatherResponse, err := callOpenWeatherAPI(
 			openWeatherParams{
 				val.latitude,
@@ -187,7 +187,7 @@ func ScrapeWeather(geolocationa []geolocation, startDateTime int64, endDateTime 
 			return err
 		}
 		for _, weather := range openWeatherResponse.List {
-			repositories.InseartWeather(repositories.Weather{
+			repositories.InsertWeather(repositories.Weather{
 				Latitude:       val.latitude,
 				Longitude:      val.longitude,
 				Datetime:       time.Unix(int64(weather.Dt), 0).Format(time.RFC3339),
