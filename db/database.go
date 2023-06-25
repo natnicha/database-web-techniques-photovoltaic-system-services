@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"gorm.io/driver/postgres"
@@ -25,5 +26,17 @@ func Connect() {
 		panic(err)
 	} else {
 		fmt.Println("Successfully connected to the database")
+	}
+}
+
+func Close() {
+	db, err := Database.DB()
+	if err != nil {
+		log.Println(err.Error())
+	}
+	if err := db.Close(); err != nil {
+		log.Println("err closing db connection")
+	} else {
+		log.Println("db connection gracefully closed")
 	}
 }
