@@ -15,11 +15,25 @@ type WeatherInfo struct {
 }
 
 func GetWeatherInfo(projectId int) WeatherInfo {
-	query := `WITH project_info as (
-		SELECT Timezone('Europe/Berlin',(cast(TO_CHAR(pj.start_at - INTERVAL '30 day', 'YYYY-MM-DD HH24:00:00') as timestamp))) as start_weather, Timezone('Europe/Berlin',cast(cast(pj.start_at as date) as timestamp)) as end_weather, p.geolocation[0] as latitude, p.geolocation[1] as longitude
+	query := `WITH report_range as (
+		Select (CAST((pj.start_at at time zone 'utc' + INTERVAL '30 day') as date) <= CAST(now() as date)) as is_over_30_days
+		,pj.start_at at time zone 'utc' as start_at, p.geolocation[0] as latitude, p.geolocation[1] as longitude
 		FROM projects pj 
 		LEFT JOIN products p ON p.project_id = pj.id
 		WHERE p.id = ` + fmt.Sprint(projectId) + `
+	)
+	, project_info as (
+		SELECT 
+			Case when is_over_30_days
+				then cast(TO_CHAR(r.start_at , 'YYYY-MM-DD HH24:00:00') as timestamp)
+				else cast(cast(now() at time zone 'utc' as date) - INTERVAL '30 day' as timestamp) 
+			end as start_weather,
+			Case when is_over_30_days
+				then cast(cast((r.start_at + INTERVAL '30 day') as date) as timestamp) - INTERVAL '1 second'
+				else cast(cast(now() at time zone 'utc' as date) as timestamp) - INTERVAL '1 second'
+			end as end_weather
+			, r.latitude, r.longitude
+		FROM report_range r
 	)
 	
 	SELECT weather.cnt, pi.* 

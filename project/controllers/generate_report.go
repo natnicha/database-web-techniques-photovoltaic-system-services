@@ -103,7 +103,7 @@ func GenerateReport(context *gin.Context) {
 				defer wg.Done()
 
 				weatherInfo := repositories.GetWeatherInfo(p.Id)
-				if weatherInfo.Count < (24 * 30) {
+				if weatherInfo.Count <= (24 * 29) {
 					err = requestHistory(userId, weatherInfo)
 					if err != nil {
 						log.Println(err.Error())
