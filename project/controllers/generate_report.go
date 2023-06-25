@@ -150,11 +150,9 @@ func requestHistory(userId string, weatherInfo repositories.WeatherInfo) error {
 		return err
 	}
 
-	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
+	request.Header.Set("user-id", userId)
 
-	q := request.URL.Query()
-	q.Add("user-id", userId)
-	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return err
@@ -174,12 +172,9 @@ func requestProducts(userId string, productId string) (ResponseGetProduct, error
 		return ResponseGetProduct{}, err
 	}
 
-	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
+	request.Header.Set("user-id", userId)
 
-	q := request.URL.Query()
-	q.Add("filter", "project_id:"+productId)
-	q.Add("user-id", userId)
-	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return ResponseGetProduct{}, err
@@ -208,11 +203,9 @@ func requestProductReportGeneration(userId string, productId int) error {
 		return err
 	}
 
-	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
+	request.Header.Set("user-id", userId)
 
-	q := request.URL.Query()
-	q.Add("user-id", userId)
-	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return err
@@ -232,11 +225,9 @@ func getUserInfo(userId string) (ResponseUser, error) {
 		return ResponseUser{}, err
 	}
 
-	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
+	request.Header.Set("user-id", userId)
 
-	q := request.URL.Query()
-	q.Add("user-id", userId)
-	request.URL.RawQuery = q.Encode()
 	resp, err := client.Do(request)
 	if err != nil {
 		return ResponseUser{}, err

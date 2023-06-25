@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 	"os"
 	controller "photovoltaic-system-services/auth/controllers"
@@ -17,11 +16,8 @@ type Help interface {
 
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		if context.GetHeader("API_KEY") == os.Getenv("APP_API_KEY") {
-			userId, err := strconv.Atoi(context.Query("user-id"))
-			if err != nil {
-				log.Println(err.Error())
-			}
+		if context.GetHeader("api-key") == os.Getenv("APP_API_KEY") {
+			userId, _ := strconv.Atoi(context.GetHeader("user-id"))
 			context.Set("user-id", userId)
 		} else {
 			err := controller.ValidateJWT(context)

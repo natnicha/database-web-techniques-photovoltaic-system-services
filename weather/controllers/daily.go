@@ -93,7 +93,7 @@ func getAllProducts() (ResponseProducts, error) {
 		return ResponseProducts{}, err
 	}
 
-	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
 	resp, err := client.Do(request)
 	if err != nil {
 		return ResponseProducts{}, err
