@@ -14,7 +14,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"photovoltaic-system-services/db"
 	Database "photovoltaic-system-services/db"
 	Middleware "photovoltaic-system-services/middleware"
 	Product "photovoltaic-system-services/product/handlers"
@@ -27,7 +26,7 @@ import (
 func main() {
 	godotenv.Load(".env")
 	Database.Connect()
-	// defer closeDB()
+	defer Database.Close()
 	router := serveApplication()
 	doGracefulShutdown(router)
 }
@@ -97,17 +96,5 @@ func doGracefulShutdown(router *gin.Engine) {
 		log.Printf("error shutting down server %s", err)
 	} else {
 		log.Println("Server gracefully stopped")
-	}
-}
-
-func closeDB() {
-	db, err := db.Database.DB()
-	if err != nil {
-		log.Println(err.Error())
-	}
-	if err := db.Close(); err != nil {
-		log.Println("err closing db connection")
-	} else {
-		log.Println("db connection gracefully closed")
 	}
 }
