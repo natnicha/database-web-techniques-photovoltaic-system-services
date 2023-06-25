@@ -1,12 +1,20 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"log"
+	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
+	"photovoltaic-system-services/db"
 	Database "photovoltaic-system-services/db"
 	Middleware "photovoltaic-system-services/middleware"
 	Product "photovoltaic-system-services/product/handlers"
@@ -17,23 +25,19 @@ import (
 )
 
 func main() {
-	// TODO : loadEnv()
 	godotenv.Load(".env")
 	Database.Connect()
-	serveApplication()
+	// defer closeDB()
+	router := serveApplication()
+	doGracefulShutdown(router)
 }
 
-func serveApplication() {
+func serveApplication() *gin.Engine {
 	router := gin.Default()
 	router.Use(Middleware.CORSMiddleware())
 	auth := router.Group("/auth")
 	auth.POST("/register", User.Register)
 	auth.POST("/login", User.Login)
-
-	weather := router.Group("/weather")
-	weather.Use(Middleware.JWTAuthMiddleware())
-	weather.POST("/daily", Weather.Daily)
-	weather.POST("/history", Weather.History)
 
 	apiV1 := router.Group("/api/v1")
 	apiV1.Use(Middleware.JWTAuthMiddleware())
@@ -59,6 +63,51 @@ func serveApplication() {
 	product.PUT("/update/:id", Product.Update)
 	product.POST("/generate-report/:id", Product.GenerateReport)
 
-	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
+	weather := apiV1.Group("/weather")
+	weather.POST("/daily", Weather.Daily)
+	weather.POST("/history", Weather.History)
+
+	return router
+}
+
+func doGracefulShutdown(router *gin.Engine) {
+	srv := &http.Server{
+		Handler: router,
+		Addr:    fmt.Sprintf(":%s", os.Getenv("SERVICE_PORT")),
+	}
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))
+
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatal(err)
+		}
+	}()
+
+	// Create channel for shutdown signals.
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+	signal.Notify(stop, syscall.SIGTERM)
+
+	//Recieve shutdown signals.
+	<-stop
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Printf("error shutting down server %s", err)
+	} else {
+		log.Println("Server gracefully stopped")
+	}
+}
+
+func closeDB() {
+	db, err := db.Database.DB()
+	if err != nil {
+		log.Println(err.Error())
+	}
+	if err := db.Close(); err != nil {
+		log.Println("err closing db connection")
+	} else {
+		log.Println("db connection gracefully closed")
+	}
 }
