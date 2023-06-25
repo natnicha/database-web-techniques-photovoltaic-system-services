@@ -18,16 +18,16 @@ To gather all locations before sending to a target API
 
 ## Query Parameters
 
-| Key                | Type      | Required  | Description                   |
-| ------------------ | :-------: | :-------: | ----------------------------- |
-|                    |           |           |                               |
+| Key                 | Type       | Required  | Description                                                       | Permission         |
+| ------------------- | :--------: | :-------: | ----------------------------------------------------------------- | ------------------ |
+| api-key             | string     | false     | Instead of Authorization, internal requests required only api-key | internal only      |
 
 
 ## Header Parameters
 
 | Key                 | Type       | Required  | Description                                 |
 | ------------------- | :--------: | :-------: | ------------------------------------------- |
-| Content-Type        | string     | true      | Content-Type has to be `application/json`   |
+|                     |            |           |                                             |
 
 
 ## Body Parameters

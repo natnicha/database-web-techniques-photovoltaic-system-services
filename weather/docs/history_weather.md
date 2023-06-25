@@ -25,9 +25,10 @@ To gather historical weather for a specific location according request body para
 
 ## Header Parameters
 
-| Key                 | Type       | Required  | Description                                 |
-| ------------------- | :--------: | :-------: | ------------------------------------------- |
-| Content-Type        | string     | true      | Content-Type has to be `application/json`   |
+| Key                 | Type       | Required  | Description                                                       | Permission         |
+| ------------------- | :--------: | :-------: | ----------------------------------------------------------------- | ------------------ |
+| Content-Type        | string     | true      | Content-Type has to be `application/json`                         | internal, external |
+| api-key             | string     | false     | Instead of Authorization, internal requests required only api-key | internal only      |
 
 
 ## Body Parameters

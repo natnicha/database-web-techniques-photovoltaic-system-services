@@ -25,9 +25,11 @@ To generate photovoltaic reports by calling to /product/generate-report/{id} acc
 
 ## Header Parameters
 
-| Key                 | Type       | Required  | Description                                 |
-| ------------------- | :--------: | :-------: | ------------------------------------------- |
-| Authorization       | string     | true      | A bearer token is required                  |
+| Key                 | Type       | Required  | Description                                                                   | Permission         |
+| ------------------- | :--------: | :-------: | ----------------------------------------------------------------------------- | ------------------ |
+| Authorization       | string     | false     | A bearer token is required for external access                                | external only      |
+| api-key             | string     | false     | Instead of Authorization, internal requests required only api-key and user-id | internal only      |
+| user-id             | string     | false     | Instead of Authorization, internal requests required only api-key and user-id | internal only      |
 
 
 ## Body Parameters

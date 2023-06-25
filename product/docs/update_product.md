@@ -25,10 +25,12 @@ To update an existing product according to body parameters for a specific user i
 
 ## Header Parameters
 
-| Key                 | Type       | Required  | Description                                 |
-| ------------------- | :--------: | :-------: | ------------------------------------------- |
-| Content-Type        | string     | true      | Content-Type has to be `application/json`   |
-| Authorization       | string     | true      | A bearer token is required                  |
+| Key                 | Type       | Required  | Description                                                                   | Permission         |
+| ------------------- | :--------: | :-------: | ----------------------------------------------------------------------------- | ------------------ |
+| Content-Type        | string     | true      | Content-Type has to be `application/json`                                     | internal, external |
+| Authorization       | string     | false     | A bearer token is required for external access                                | external only      |
+| api-key             | string     | false     | Instead of Authorization, internal requests required only api-key and user-id | internal only      |
+| user-id             | string     | false     | Instead of Authorization, internal requests required only api-key and user-id | internal only      |
 
 
 ## Body Parameters
