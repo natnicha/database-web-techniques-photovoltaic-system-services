@@ -25,16 +25,18 @@ To gather historical weather for a specific location according request body para
 
 ## Header Parameters
 
-| Key                 | Type       | Required  | Description                                 |
-| ------------------- | :--------: | :-------: | ------------------------------------------- |
-| Content-Type        | string     | true      | Content-Type has to be `application/json`   |
+| Key                 | Type       | Required  | Description                                                       | Permission         |
+| ------------------- | :--------: | :-------: | ----------------------------------------------------------------- | ------------------ |
+| Content-Type        | string     | true      | Content-Type has to be `application/json`                         | internal, external |
+| api-key             | string     | false     | Instead of Authorization, internal requests required only api-key | internal only      |
 
 
 ## Body Parameters
 
 | Field Name      | Type     | Required | Default Value   |  Description                                                                                           |
 | --------------- | -------- | -------- | --------------- | ------------------------------------------------------------------------------------------------------ |
-| geolocation     | string   | true     |                 | latitude and longitude of location of an installed solar panel in (`latitude`,`longtitude`) format     |
+| latitude        | string   | true     |                 | latitude of location of an installed solar panel                                                       |
+| longitude       | string   | true     |                 | longitude of location of an installed solar panel                                                      |
 | start_at        | datetime | true     |                 | a starting expected date for historical weather in YYYY-MM-DDThh:mm:dd format e.g. 2023-05-30T00:00:01 |
 | end_at          | datetime | true     |                 | a ending expected date for historical weather in YYYY-MM-DDThh:mm:dd format e.g. 2023-06-30T00:00:01   |
 

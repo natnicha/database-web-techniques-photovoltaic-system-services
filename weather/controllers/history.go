@@ -3,8 +3,6 @@ package controller
 import (
 	"log"
 	"net/http"
-	"runtime"
-	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -12,9 +10,10 @@ import (
 )
 
 type requestBody struct {
-	Geolocation string `json:"geolocation" validate:"required"`
-	StartAt     string `json:"start_at" validate:"required"`
-	EndAt       string `json:"end_at" validate:"required"`
+	Latitude  string `json:"latitude" validate:"required"`
+	Longitude string `json:"longitude" validate:"required"`
+	StartAt   string `json:"start_at" validate:"required"`
+	EndAt     string `json:"end_at" validate:"required"`
 }
 
 func History(context *gin.Context) {
@@ -32,34 +31,28 @@ func History(context *gin.Context) {
 		}
 	}
 
-	runtime.GOMAXPROCS(2)
-	var wg sync.WaitGroup
-	wg.Add(2)
-
-	// immediatly return 202 Accepted response
-	go func() {
-		defer wg.Done()
-		context.JSON(http.StatusAccepted, nil)
-		return
-	}()
-
-	// parallel making requests for weather
-	go func() {
-		defer wg.Done()
-
-		startDateTime, err := time.Parse("2006-01-02 15:04:05+01", reqBody.StartAt)
-		endDateTime, err := time.Parse("2006-01-02 15:04:05+01", reqBody.EndAt)
+	startDateTime, err := time.Parse("2006-01-02 15:04:05-07", reqBody.StartAt)
+	endDateTime, err := time.Parse("2006-01-02 15:04:05-07", reqBody.EndAt)
+	startIntervalDateTime := startDateTime
+	endIntervalDateTime := startDateTime
+	for endIntervalDateTime.Before(endDateTime) {
+		if endIntervalDateTime.Add(7 * 24 * time.Hour).After(endDateTime) {
+			endIntervalDateTime = endDateTime
+		} else {
+			endIntervalDateTime = endIntervalDateTime.Add(7 * 24 * time.Hour)
+		}
 		err = ScrapeWeather(
-			[]geolocation{extractLatLong(reqBody.Geolocation)},
-			startDateTime.Unix(),
-			endDateTime.Unix())
+			[]geolocation{{latitude: reqBody.Latitude, longitude: reqBody.Longitude}},
+			startIntervalDateTime.Unix(),
+			endIntervalDateTime.Unix())
 		if err != nil {
 			log.Println(err.Error())
 			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
-		return
-	}()
+		startIntervalDateTime = endIntervalDateTime
+	}
+	context.JSON(http.StatusOK, nil)
 	return
 }
 

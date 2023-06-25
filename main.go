@@ -47,6 +47,7 @@ func serveApplication() {
 	project.POST("/create", Project.Create)
 	project.DELETE("/delete/:id", Project.Delete)
 	project.PUT("/update/:id", Project.Update)
+	project.POST("/generate-report/:id", Project.GenerateReport)
 
 	solarPanel := apiV1.Group("/solar-panel-model")
 	solarPanel.GET("/", SolarPanel.Get)
@@ -56,6 +57,7 @@ func serveApplication() {
 	product.POST("/create", Product.Create)
 	product.DELETE("/delete/:id", Product.Delete)
 	product.PUT("/update/:id", Product.Update)
+	product.POST("/generate-report/:id", Product.GenerateReport)
 
 	router.Run(":" + os.Getenv("SERVICE_PORT")) // listen and serve on port in .env
 	fmt.Println("Server running on port " + os.Getenv("SERVICE_PORT"))

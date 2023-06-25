@@ -11,7 +11,6 @@ import (
 	"photovoltaic-system-services/weather/repositories"
 	"regexp"
 	"runtime"
-	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -25,10 +24,12 @@ type geolocation struct {
 	latitude  string
 	longitude string
 }
+
 type openWeatherParams struct {
-	geolocation geolocation
-	start       int64
-	end         int64
+	latitude  string
+	longitude string
+	start     int64
+	end       int64
 }
 
 type openWeatherResponse struct {
@@ -57,26 +58,20 @@ type main struct {
 func Daily(context *gin.Context) {
 	runtime.GOMAXPROCS(2)
 
-	var wg sync.WaitGroup
-	wg.Add(2)
-
 	// immediatly return 202 Accepted response
 	go func() {
-		defer wg.Done()
 		context.JSON(http.StatusAccepted, nil)
 		return
 	}()
 
 	// parallel making requests for weather
 	go func() {
-		defer wg.Done()
 		yesterday := time.Now().AddDate(0, 0, -1)
 		startDateTime := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 0, 0, 0, 0, time.Local).Unix()
 		endDateTime := time.Date(yesterday.Year(), yesterday.Month(), yesterday.Day(), 23, 59, 0, 0, time.Local).Unix()
 		products, err := getAllProducts()
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 
@@ -84,7 +79,6 @@ func Daily(context *gin.Context) {
 		err = ScrapeWeather(uniqueGeolocation, startDateTime, endDateTime)
 		if err != nil {
 			log.Println(err.Error())
-			context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		return
@@ -99,7 +93,7 @@ func getAllProducts() (ResponseProducts, error) {
 		return ResponseProducts{}, err
 	}
 
-	request.Header.Set("API_KEY", os.Getenv("APP_API_KEY"))
+	request.Header.Set("api-key", os.Getenv("APP_API_KEY"))
 	resp, err := client.Do(request)
 	if err != nil {
 		return ResponseProducts{}, err
@@ -131,8 +125,8 @@ func callOpenWeatherAPI(openWeatherParams openWeatherParams) (openWeatherRespons
 		return openWeatherResponse{}, err
 	}
 	q := request.URL.Query()
-	q.Add("lat", openWeatherParams.geolocation.latitude)
-	q.Add("lon", openWeatherParams.geolocation.longitude)
+	q.Add("lat", openWeatherParams.latitude)
+	q.Add("lon", openWeatherParams.longitude)
 	q.Add("start", fmt.Sprint(openWeatherParams.start))
 	q.Add("end", fmt.Sprint(openWeatherParams.end))
 	q.Add("type", os.Getenv("OPEN_WEATHER_DURATION"))
@@ -179,11 +173,12 @@ func getUniqueGeolocation(products []repositories.Product) []geolocation {
 	return uniqueGeolocation
 }
 
-func ScrapeWeather(geolocationa []geolocation, startDateTime int64, endDateTime int64) error {
-	for _, val := range geolocationa {
+func ScrapeWeather(geolocation []geolocation, startDateTime int64, endDateTime int64) error {
+	for _, val := range geolocation {
 		openWeatherResponse, err := callOpenWeatherAPI(
 			openWeatherParams{
-				val,
+				val.latitude,
+				val.longitude,
 				startDateTime,
 				endDateTime,
 			},
@@ -192,8 +187,9 @@ func ScrapeWeather(geolocationa []geolocation, startDateTime int64, endDateTime 
 			return err
 		}
 		for _, weather := range openWeatherResponse.List {
-			repositories.InseartWeather(repositories.Weather{
-				Geolocation:    "(" + val.latitude + "," + val.longitude + ")",
+			repositories.InsertWeather(repositories.Weather{
+				Latitude:       val.latitude,
+				Longitude:      val.longitude,
 				Datetime:       time.Unix(int64(weather.Dt), 0).Format(time.RFC3339),
 				AirTemperature: weather.Main.Temp,
 				Humidity:       int(weather.Main.Humidity),

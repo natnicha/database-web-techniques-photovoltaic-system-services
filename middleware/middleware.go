@@ -5,6 +5,7 @@ import (
 	"os"
 	controller "photovoltaic-system-services/auth/controllers"
 	"photovoltaic-system-services/auth/repositories"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,8 +16,9 @@ type Help interface {
 
 func JWTAuthMiddleware() gin.HandlerFunc {
 	return func(context *gin.Context) {
-		if context.GetHeader("API_KEY") == os.Getenv("APP_API_KEY") {
-			context.Set("user-id", 0)
+		if context.GetHeader("api-key") == os.Getenv("APP_API_KEY") {
+			userId, _ := strconv.Atoi(context.GetHeader("user-id"))
+			context.Set("user-id", userId)
 		} else {
 			err := controller.ValidateJWT(context)
 			if err != nil {
@@ -36,6 +38,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 				return
 			}
 			context.Set("user-id", user.Id)
+			context.Set("authorization", context.GetHeader("Authorization"))
 		}
 		context.Request.Header.Add("Access-Control-Allow-Origin", "*")
 		context.Request.Header.Add("Access-Control-Allow-Credentials", "true")

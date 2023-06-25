@@ -37,6 +37,13 @@ func CheckExistProject(projectId int, project Projects) int64 {
 	return count
 }
 
+func CheckExistProjectByProductIdAndUserId(productId int, userId int) int64 {
+	var count int64
+	statement := "SELECT count(pd.id) FROM products pd LEFT JOIN projects pj ON pd.project_id = pj.id WHERE pd.id = ? AND pj.user_id = ?"
+	db.Database.Raw(statement, productId, userId).Count(&count)
+	return count
+}
+
 func DeleteProjectById(id int) (err error) {
 	result := db.Database.Where("id = ?", id).Delete(Projects{})
 	if result.Error != nil {

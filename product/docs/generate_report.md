@@ -1,19 +1,19 @@
-# [DELETE] Delete a Project  
+# [POST] Generate a Photovoltaic System Report
 
-To delete a project for a specific user in authorization token
+To generate a photovoltaic report according to the product for a specific user in authorization token
 
 ## URL
 
-| ** Method **    | DELETE                        | 
-| --------------- | ----------------------------- | 
-| ** Structure ** | `/api/v1/project/delete/{id}` |
+| ** Method **    | POST                                   | 
+| --------------- | -------------------------------------- | 
+| ** Structure ** | `/api/v1/product/generate-report/{id}` |
 
 
 ## Path Parameters
 
-| Key       | Type      | Required     | Description                     |
-| --------- | :-------: | :----------: | ------------------------------- |
-| id        | integer   | true         | a project ID to delete          |
+| Key       | Type      | Required     | Description                         |
+| --------- | :-------: | :----------: | ----------------------------------- |
+| id        | integer   | true         | a product ID to generate a report   |
 
 
 ## Query Parameters
@@ -41,21 +41,21 @@ To delete a project for a specific user in authorization token
 
 ## Sample Request(s) 
 ```
-url = /api/v1/project/delete/1
+url = /api/v1/product/generate-report/1
 ```
 
 ## Sample Response(s)
 ### A success Response
-HTTP status 200 OK
+HTTP status 202 Accepted
 ```json
 null
 ```
 
-### An error response (case: No specified product ID or a project ID doesn't belong to user ID in authorization token)
+### An error response (case: a product ID doesn't belong to user ID in authorization token)
 HTTP status 409 Conflict
 ```json
 {
-  "error": "No specified product ID or a project ID doesn't belong to a user ID"
+  "error": "a product ID doesn't belong to a user ID"
 }
 ```
 
