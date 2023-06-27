@@ -72,6 +72,7 @@ HTTP status 200 OK
     "inclination": 5.25,
     "area": 20,
     "geolocation": "(50.8282, 12.9209)",
+    "generated_energy": 66.8039,
   }
 }
 ```
