@@ -48,8 +48,21 @@ func DeleteProductById(id int) (err error) {
 func GetProduct(query ListRequest) (*[]Product, error) {
 	tx := db.Database.Model(&Product{})
 	if len(query.Filter) > 0 {
-		filters := strings.Split(query.Filter, ":")
-		tx.Where(filters[0] + " = " + filters[1])
+		if strings.Contains(query.Filter, ",") {
+			filters := strings.Split(query.Filter, ",")
+			where := ""
+			for _, filter := range filters {
+				if where != "" {
+					where += " and "
+				}
+				f := strings.Split(filter, ":")
+				where += "cast( " + f[0] + " as varchar)  like '%" + f[1] + "%'"
+			}
+			tx.Where(where)
+		} else {
+			filters := strings.Split(query.Filter, ":")
+			tx.Where("cast( " + filters[0] + " as varchar)  like '%" + filters[1] + "%'")
+		}
 	}
 	if query.Offset > 0 {
 		tx.Offset(query.Offset)

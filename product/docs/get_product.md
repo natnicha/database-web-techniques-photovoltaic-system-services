@@ -20,7 +20,7 @@ To get an existing products according to query parameters for a specific user in
 
 | Key                | Type      | Required  | Description                                                                                        |
 | ------------------ | :-------: | :-------: | -------------------------------------------------------------------------------------------------- |
-| filter             | array     | false     | to filter products for a specific condition e.g. id:1 means select only id = 1                     |
+| filter             | array     | false     | to filter products for a specific condition e.g. id:1 means select only id = 1. Over 1 filter values are separated by comma e.g. id:1,project_id:1 |
 | limit              | int       | false     | to limit number of products                                                                        |
 | offset             | int       | false     | to exclude from a response the first N items of a resource collection                              |
 | sort_by            | string    | false     | to specify a sorting column in a resource collection e.g. id                                       |
