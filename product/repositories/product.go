@@ -13,6 +13,7 @@ type Product struct {
 	Inclination       float32 `json:"inclination"`
 	Area              float32 `json:"area"`
 	Geolocation       string  `json:"geolocation"`
+	GeneratedEnergy   float32 `json:"generated_energy"`
 }
 
 type ListRequest struct {
