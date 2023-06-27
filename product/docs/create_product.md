@@ -73,7 +73,7 @@ HTTP status 201 Created
     "inclination": 5.25,
     "area": 20,
     "geolocation": "(50.8282, 12.9209)",
-    "generated_energy": "",
+    "generated_energy": 0,
   }
 }
 ```
