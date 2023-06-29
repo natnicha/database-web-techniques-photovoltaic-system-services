@@ -6,7 +6,6 @@ import (
 	"os"
 	"photovoltaic-system-services/auth/repositories"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
@@ -15,16 +14,11 @@ import (
 func ValidateJWT(context *gin.Context) error {
 	token, err := getToken(context)
 	if err != nil {
-		return errors.New("error getting token or no token provided")
+		return err
 	}
-	claims, ok := token.Claims.(jwt.MapClaims)
+	_, ok := token.Claims.(jwt.MapClaims)
 	if !(ok && token.Valid) {
 		return errors.New("invalid token provided")
-	}
-	now := time.Now().Unix()
-	isExpire := claims.VerifyExpiresAt(now, true)
-	if !isExpire {
-		return errors.New("token expired")
 	}
 	return nil
 }

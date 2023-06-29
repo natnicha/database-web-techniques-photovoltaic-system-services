@@ -42,13 +42,25 @@ func Login(context *gin.Context) {
 		return
 	}
 
-	jwt, err := generateJWT(user.Id)
+	jwt, err := generateValidJWT(user.Id)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	repositories.CreateLogin(user.Id)
+	host := context.GetHeader("Host")
+	userAgent := context.GetHeader("User-Agent")
+	userLog := repositories.UserLog{
+		Type:      "login",
+		UserId:    user.Id,
+		Host:      host,
+		UserAgent: userAgent,
+	}
+	err = repositories.InsertLoginUserLog(userLog)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	context.JSON(http.StatusOK, gin.H{"access_token": jwt})
 }
 
@@ -59,7 +71,7 @@ func validatePassword(hashPassword []byte, password string) (isCorrect bool) {
 
 var privateKey = []byte(os.Getenv("JWT_SECRET_KEY"))
 
-func generateJWT(userId int) (string, error) {
+func generateValidJWT(userId int) (string, error) {
 	tokenTTL, _ := strconv.Atoi(os.Getenv("JWT_DURATION"))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  userId,
