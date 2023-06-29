@@ -43,6 +43,7 @@ func serveApplication() *gin.Engine {
 	user := apiV1.Group("/user")
 	user.GET("/", User.Get)
 	user.DELETE("/delete", User.Delete)
+	auth.POST("/logout", User.Logout)
 	user.PUT("/update", User.Update)
 
 	project := apiV1.Group("/project")
