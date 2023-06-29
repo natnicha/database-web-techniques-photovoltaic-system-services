@@ -22,7 +22,7 @@ func JWTAuthMiddleware() gin.HandlerFunc {
 		} else {
 			err := controller.ValidateJWT(context)
 			if err != nil {
-				context.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication required"})
+				context.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 				context.Abort()
 				return
 			}
