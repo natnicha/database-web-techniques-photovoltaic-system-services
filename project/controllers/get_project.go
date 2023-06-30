@@ -14,11 +14,12 @@ func Get(context *gin.Context) {
 	queryParams := context.Request.URL.Query()
 
 	userIdStr, _ := context.Get("user-id")
-	if queryParams["filter"][0] != "" {
-		queryParams["filter"][0] = queryParams["filter"][0] + ","
-	}
 	userId := fmt.Sprint(userIdStr.(int))
-	queryParams["filter"][0] = queryParams["filter"][0] + ("user_id:" + userId)
+	if queryParams.Get("filter") != "" {
+		queryParams.Set(queryParams.Get("filter"), ",user_id:"+userId)
+	} else {
+		queryParams.Add("filter", "user_id:"+userId)
+	}
 
 	query, err := getQuery(queryParams)
 	if err != nil {
