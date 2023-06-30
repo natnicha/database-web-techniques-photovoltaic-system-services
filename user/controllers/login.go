@@ -76,7 +76,7 @@ func generateValidJWT(userId int) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  userId,
 		"iat": time.Now().Unix(),
-		"exp": time.Now().Add(time.Second * time.Duration(tokenTTL)).Unix(),
+		"exp": time.Now().Add(time.Minute * time.Duration(tokenTTL)).Unix(),
 	})
 	return token.SignedString(privateKey)
 }

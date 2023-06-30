@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"photovoltaic-system-services/product/repositories"
@@ -16,6 +17,15 @@ func Get(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	userIdStr, _ := context.Get("user-id")
+	userId := fmt.Sprint(userIdStr.(int))
+	if queryParams.Get("filter") != "" {
+		queryParams.Set(queryParams.Get("filter"), ",user_id:"+userId)
+	} else {
+		queryParams.Add("filter", "user_id:"+userId)
+	}
+
 	projects, err := repositories.GetProduct(query)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, err.Error())
