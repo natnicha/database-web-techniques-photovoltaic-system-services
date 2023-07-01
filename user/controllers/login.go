@@ -72,11 +72,11 @@ func validatePassword(hashPassword []byte, password string) (isCorrect bool) {
 var privateKey = []byte(os.Getenv("JWT_SECRET_KEY"))
 
 func generateValidJWT(userId int) (string, error) {
-	tokenTTL, _ := strconv.Atoi(os.Getenv("JWT_DURATION"))
+	tokenDuration, _ := strconv.Atoi(os.Getenv("JWT_DURATION_MINUTE"))
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":  userId,
 		"iat": time.Now().Unix(),
-		"exp": time.Now().Add(time.Minute * time.Duration(tokenTTL)).Unix(),
+		"exp": time.Now().Add(time.Minute * time.Duration(tokenDuration)).Unix(),
 	})
 	return token.SignedString(privateKey)
 }
