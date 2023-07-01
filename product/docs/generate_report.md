@@ -1,6 +1,6 @@
 # [POST] Generate a Photovoltaic System Report
 
-To generate a photovoltaic report according to the product for a specific user in authorization token
+To generate a photovoltaic report according to the product for a specific user in authorization token. This API only generate a report and place on a system. It will not send out an email for a report. This API is designed to work together with `/api/v1/project/generate-report/{id}`
 
 ## URL
 
