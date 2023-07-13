@@ -110,7 +110,7 @@ func getAllProducts() (ResponseProducts, error) {
 }
 
 func extractLatLong(point string) geolocation {
-	regEx := `(?P<lat>[\d.]+),(?P<long>[\d.]+)`
+	regEx := `(?P<lat>[-\d.]+),(?P<long>[-\d.]+)`
 	var compRegEx = regexp.MustCompile(regEx)
 	matches := compRegEx.FindStringSubmatch(point)
 
