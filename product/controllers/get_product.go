@@ -21,7 +21,7 @@ func Get(context *gin.Context) {
 	userIdStr, _ := context.Get("user-id")
 	userId := fmt.Sprint(userIdStr.(int))
 	if queryParams.Get("filter") != "" {
-		queryParams.Set(queryParams.Get("filter"), ",user_id:"+userId)
+		queryParams.Set("filter", queryParams.Get("filter")+"&user_id:"+userId)
 	} else {
 		queryParams.Add("filter", "user_id:"+userId)
 	}
